@@ -1,39 +1,104 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A simple package to access dropbox, using dart.
 
 ## Features
+<ul>
+  <li>Move files from dropbox</li>
+  <li>Copy files from dropbox</li>
+  <li>Delete files from dropbox</li>
+  <li>Get a file link from dropbox</li>
+  <li>Refresh token</li>
+  <li>Create folder in dropbox</li>
+  <li>Upload file to dropbox</li>
+</ul>
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+~~~bash
+dart pub add run_small_dropbox
+~~~
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+NOTE: I initially created this package to help me with my applications, because I couldn't find a package that helped me work with dropbox using dart.
 
-```dart
-const like = 'sample';
-```
+The package currently only provides 6 functionality; that of getting a temporary link to a file, creating a folder, moving, copying and deleting a file, uploading a file, getting or refring your token.
+
+Well, follow the examples on how to use the package:
+
+Well, the basics first. Import it:
+
+~~~dart
+import 'package:run_small_dropbox/run_small_dropbox.dart';
+~~~
+
+Get the temporary link of a file.
+~~~dart
+void main() {
+   getTemporaryFileLink(commonParameter('token'), bodyParameterToAcquireTheTemporaryLink('/path/file'));
+}
+~~~
+
+Create a new folder in your dropbox.
+~~~dart
+void main() {
+   createFolder(commonParameter('token'), bodyParameterForFolderCreation('/my-new-folder'));
+}
+~~~
+
+Copy a file.
+~~~dart
+void main() {
+   copyFile(commonParameter('token'), bodyParameterToCopyFile('from-this-path', 'to-here-path'));
+}
+~~~
+
+Delete a file.
+~~~dart
+void main() {
+   deleteFile(commonParameter('token'), bodyParameterToDeleteFile('/path/file'));
+}
+~~~
+
+Upload a file to dropbox.
+Load any binary file.
+~~~dart
+void main() {
+   uploadFile(UploadFiles('token', 'up-to'), File(''));
+}
+~~~
+
+Move the file.
+~~~dart
+void main() {
+   moveFile(commonParameter('token'), bodyParameterToMoveFile('from-this-path', 'to-here-path'));
+}
+~~~
+
+
+Get a new access token.
+~~~dart
+map apiconsole = {
+   "refresh_token": "your refresh token",
+   'appKey': 'your app key',
+   'appSecret': 'your secret key',
+};
+
+class Authentication {
+   static String appKey = apiconsole['appKey'];
+   static String appSecret = apiconsole['appSecret'];
+   static String refreshToken = apiconsole['refresh_token'];
+}
+
+void main() {
+   refreshToken(refreshToken: Authentication.refreshToken, appKey: Authentication.appKey, secretKey: Authentication.appSecret);
+}
+~~~
+
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Each of these functions returns a Response object. Use it as you please.
+
+Good coding.
