@@ -1,7 +1,6 @@
 name: run_small_dropbox
 description: Pacote simples para acesso a API do dropbox..
 version: 1.0.1
-author: Farioso Fernando <farioso.f@gmail.com>
 homepage: https://github.com/fariosofernando/run-small-dropbox-package
 # repository: https://github.com/my_org/my_repo
 
