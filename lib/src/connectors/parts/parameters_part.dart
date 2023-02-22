@@ -7,7 +7,8 @@ class PaperUpdate {
   Map<String, String> headers() {
     return {
       'Authorization': 'Bearer $token',
-      'Dropbox-API-Arg': '{"doc_update_policy":"update","import_format":"html","paper_revision":123,"path":"$uptadeThis"}',
+      'Dropbox-API-Arg':
+          '{"doc_update_policy":"update","import_format":"html","paper_revision":123,"path":"$uptadeThis"}',
       'Content-Type': 'application/octet-stream',
     };
   }
@@ -51,11 +52,23 @@ Map<String, String> bodyParameterToAcquireTheTemporaryLink(String path) {
 }
 
 Map<String, dynamic> bodyParameterToCopyFile(String onTheWay, String toTheWay) {
-  return {"allow_ownership_transfer": false, "allow_shared_folder": false, "autorename": false, "from_path": onTheWay, "to_path": toTheWay};
+  return {
+    "allow_ownership_transfer": false,
+    "allow_shared_folder": false,
+    "autorename": false,
+    "from_path": onTheWay,
+    "to_path": toTheWay
+  };
 }
 
 Map<String, dynamic> bodyParameterToMoveFile(String onTheWay, String toTheWay) {
-  return {"allow_ownership_transfer": false, "allow_shared_folder": false, "autorename": false, "from_path": onTheWay, "to_path": toTheWay};
+  return {
+    "allow_ownership_transfer": false,
+    "allow_shared_folder": false,
+    "autorename": false,
+    "from_path": onTheWay,
+    "to_path": toTheWay
+  };
 }
 
 Map<String, dynamic> bodyParameterForFolderCreation(String path) {
