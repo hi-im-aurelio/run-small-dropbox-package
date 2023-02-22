@@ -1,15 +1,19 @@
 class Auth {
-  static final String _auth = 'https://api.dropbox.com/oauth2/token?';
-  static String _refresh = '';
+  static final String auth = 'https://api.dropbox.com/oauth2/token?';
+  static String isRefresh = '';
 
-  final String _refreshToken, _appKey, _secretKey;
+  final String refreshToken;
+  final String appKey;
+  final String secretKey;
 
-  Auth({required refreshToken, required appKey, required secretKey})
-      : _refreshToken = refreshToken,
-        _appKey = appKey,
-        _secretKey = secretKey {
-    _refresh = '${_auth}refresh_token=$_refreshToken&grant_type=refresh_token&client_id=$_appKey&client_secret=$_secretKey';
+  Auth({
+    required this.refreshToken,
+    required this.appKey,
+    required this.secretKey,
+  }) {
+    isRefresh =
+        '${auth}refreshtoken=$refreshToken&granttype=refreshtoken&clientid=$appKey&clientsecret=$secretKey';
   }
 
-  String get refresh => _refresh;
+  String get refresh => isRefresh;
 }
