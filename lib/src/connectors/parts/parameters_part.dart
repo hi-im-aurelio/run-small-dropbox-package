@@ -1,3 +1,32 @@
+class PaperUpdate {
+  final String token;
+  final String uptadeThis;
+
+  PaperUpdate(this.token, this.uptadeThis);
+
+  Map<String, String> headers() {
+    return {
+      'Authorization': 'Bearer $token',
+      'Dropbox-API-Arg': '{"doc_update_policy":"update","import_format":"html","paper_revision":123,"path":"$uptadeThis"}',
+      'Content-Type': 'application/octet-stream',
+    };
+  }
+}
+
+class PaperCreate {
+  final String token;
+  final String inThisPath;
+
+  PaperCreate(this.token, this.inThisPath);
+  Map<String, String> headers() {
+    return {
+      'Authorization': 'Bearer $token',
+      'Dropbox-API-Arg': '{"import_format":"html","path":"$inThisPath"}',
+      'Content-Type': 'application/octet-stream',
+    };
+  }
+}
+
 class UploadFiles {
   final String token;
   final String goUpTo;
@@ -14,7 +43,7 @@ class UploadFiles {
 }
 
 Map<String, String> commonParameter(String token) {
-  return {'Authorization': token, 'Content-Type': 'application/json'};
+  return {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
 }
 
 Map<String, String> bodyParameterToAcquireTheTemporaryLink(String path) {

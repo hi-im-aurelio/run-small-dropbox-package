@@ -3,15 +3,22 @@ A simple package to access dropbox, using dart.
 
 ## Features
 <ul>
-  <li>Move files from dropbox</li>
-  <li>Copy files from dropbox</li>
-  <li>Delete files from dropbox</li>
-  <li>Get a file link from dropbox</li>
-  <li>Refresh token</li>
-  <li>Create folder in dropbox</li>
-  <li>Upload file to dropbox</li>
+   <li>[#NEW] Create a paper document</li>
+   <li>[#NEW] Update a Paper document</li>
+   <li>Move files from dropbox</li>
+   <li>Copy files from dropbox</li>
+   <li>Delete files from dropbox</li>
+   <li>Get a file link from dropbox</li>
+   <li>Refresh token</li>
+   <li>Create folder in dropbox</li>
+   <li>Upload file to dropbox</li>
 </ul>
 
+## NEWS
+Creating a paper document in dropobox.
+~~~bash
+paperCreate(PaperCreate(<token>, 'path'));
+~~~
 
 ## Getting started
 

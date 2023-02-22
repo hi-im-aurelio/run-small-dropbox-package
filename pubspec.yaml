@@ -1,6 +1,6 @@
 name: run_small_dropbox
-description: Pacote simples para acesso a API do dropbox..
-version: 1.0.1
+description: Pacote simples para acesso a API do dropbox. Acesse o dropbox de froma simples e rapida, icurtando varios passos da implementacao normal da api oficial. Com suporte para todas as plataformas.
+version: 2.0.1
 homepage: https://github.com/fariosofernando/run-small-dropbox-package
 # repository: https://github.com/my_org/my_repo
 
@@ -11,6 +11,7 @@ dependencies:
   http: ^0.13.5
   http_parser: ^4.0.2
   path: ^1.8.3
+  universal_io: ^2.2.0
 
 dev_dependencies:
   lints: ^2.0.0
