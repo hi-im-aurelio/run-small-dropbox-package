@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:run_small_dropbox/run_small_dropbox.dart';
+import 'package:universal_io/io.dart';
 
 void main(List<String> args) {
   // Pegue o link temporario de um arquivo.
