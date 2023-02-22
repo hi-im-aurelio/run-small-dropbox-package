@@ -10,6 +10,7 @@ environment:
 dependencies:
   run_small_dropbox:
     path: ../
+  universal_io: ^2.2.0
 
 dev_dependencies:
   lints: ^2.0.0
