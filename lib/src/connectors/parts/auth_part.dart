@@ -11,8 +11,7 @@ class Auth {
     required this.appKey,
     required this.secretKey,
   }) {
-    isRefresh =
-        '${auth}refreshtoken=$refreshToken&granttype=refreshtoken&clientid=$appKey&clientsecret=$secretKey';
+    isRefresh = '${auth}refreshtoken=$refreshToken&granttype=refreshtoken&clientid=$appKey&clientsecret=$secretKey';
   }
 
   String get refresh => isRefresh;
