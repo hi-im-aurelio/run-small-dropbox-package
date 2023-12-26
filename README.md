@@ -1,3 +1,4 @@
+ATTENTION: EVERYTHING BELOW IS "DEPRECIATED", FOR DOCUMENTATION OF THE USE OF THE PACKAGE, USE THE RELEASE VERSION DOCUMENTATION: https://github.com/fariosofernando/run-small-dropbox-package/tree/master
 
 A simple package to access dropbox, using dart.
 
