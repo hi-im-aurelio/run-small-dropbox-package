@@ -688,18 +688,13 @@ class DropboxFile {
   /// `https://api.dropboxapi.com/2/files/get_metadata`
   ///
   /// Parameters:
-  /// - [path]: The path of a file or folder on Dropbox.
-  /// - [includeDeleted]: Whether to include deleted items in the response (optional).
-  /// - [includeHasExplicitSharedMembers]: Whether to include has_explicit_shared_members in the response (optional).
-  /// - [includeMediaInfo]: Whether to include mediaInfo in the response (optional).
+  /// - `path`: The path of a file or folder on Dropbox.
   ///
-  /// Returns a [Future] with a [Map<String, dynamic>]:
-  /// - If the item is a file, {'type': 'file', 'metadata': response metadata}.
-  /// - If the item is a folder, {'type': 'folder', 'metadata': response metadata}.
-  /// - If the item is deleted, {'type': 'deleted', 'metadata': response metadata}.
-  /// - If the item is unknown, {'type': 'unknown', 'metadata': response metadata}.
-  /// - If there's an error, {'type': 'error', 'error': response data}.
+  /// - `includeDeleted`: Whether to include deleted items in the response (optional).
   ///
+  /// - `includeHasExplicitSharedMembers`: Whether to include has_explicit_shared_members in the response (optional).
+  ///
+  /// - `includeMediaInfo`: Whether to include mediaInfo in the response (optional).
   Future<Map<String, dynamic>> getMetadata(
     String path, {
     bool includeDeleted = false,
@@ -1088,6 +1083,10 @@ class DropboxFile {
     }
   }
 
+  /// Continues retrieving the contents of a folder.
+  ///
+  /// `cursor`: The cursor returned by your last call to `listFolder` or `listFolderContinue`.
+  /// A way to quickly get a cursor for the folder's state.
   Future<Map<String, dynamic>> listFolderContinue(String cursor) async {
     final requestData = {
       'cursor': cursor,
@@ -1119,6 +1118,26 @@ class DropboxFile {
     }
   }
 
+  /// A way to quickly get a cursor for the folder's state.
+  ///
+  /// Unlike `listFolder`, `listFolderGetLatestCursor` doesn't return any entries.
+  ///
+  /// This endpoint is for an app that only needs to know about new files and modifications
+  /// and doesn't need to know about files that already exist in Dropbox.
+  ///
+  /// `path`: A unique identifier for the file.
+  ///
+  /// `includeDeleted`: If true, the results will include entries for files and folders that used to exist but were deleted.
+  ///
+  /// `includeHasExplicitSharedMembers`: If true, the results will include a flag for each file indicating whether or not that file has any explicit members.
+  ///
+  /// `includeMediaInfo`: Deprecated. If true, FileMetadata.media_info is set for photo and video.
+  ///
+  /// `includeMountedFolders`: If true, the results will include entries under mounted folders, which include the app folder, shared folder, and team folder.
+  ///
+  /// `includeNonDownloadableFiles`: If true, include files that are not downloadable, i.e., Google Docs. Default is true.
+  ///
+  /// `recursive`: If true, the list folder operation will be applied recursively to all subfolders.
   Future<Map<String, dynamic>> listFolderGetLatestCursor(String path) async {
     final requestData = {
       'include_deleted': false,
