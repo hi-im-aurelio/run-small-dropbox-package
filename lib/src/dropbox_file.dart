@@ -24,6 +24,36 @@ class DropboxFile {
 
   DropboxFile(DropboxApp dropbox) : _dropbox = dropbox;
 
+  /// Copies a file or folder from one location to another in the user's Dropbox.
+  ///
+  /// The function uses the Dropbox API endpoint for copying files:
+  /// `https://api.dropboxapi.com/2/files/copy_v2`
+  ///
+  /// Parameters:
+  /// - [fromPath]: Path of the file or folder to be copied.
+  /// - [toPath]: Destination path in the user's Dropbox.
+  /// - [allowOwnershipTransfer]: Allow moves by owner, even if it results in ownership transfer. Default is `false`.
+  /// - [allowSharedFolder]: Deprecated. This flag has no effect. Default is `false`.
+  /// - [autorename]: Try to autorename the file if there's a conflict. Default is `false`.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'success': true, 'metadata': response body}.
+  /// - If there's an error, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.copyFile(
+  ///   fromPath: '/Homework/math',
+  ///   toPath: '/Homework/algebra',
+  ///   allowOwnershipTransfer: false,
+  ///   allowSharedFolder: false,
+  ///   autorename: false,
+  /// );
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> copyFile({
     required String fromPath,
     required String toPath,
@@ -53,6 +83,38 @@ class DropboxFile {
     }
   }
 
+  /// Copies multiple files or folders to different locations at once in the user's Dropbox.
+  ///
+  /// This function utilizes the Dropbox API endpoint for copying multiple files:
+  /// `https://api.dropboxapi.com/2/files/copy_batch_v2`
+  ///
+  /// Parameters:
+  /// - [entries]: List of maps, where each map contains the 'from_path' and 'to_path' keys specifying the source and destination paths.
+  /// - [autorename]: (Optional) If there's a conflict with any file, attempt to autorename that file to avoid the conflict. Default is `false`.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'success': true, 'result': response body}.
+  /// - If there's an error, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final entries = [
+  ///   {'from_path': '/Homework/math', 'to_path': '/Homework/algebra'},
+  ///   // Add more entries as needed
+  /// ];
+  ///
+  /// final result = await dropboxFile.copyBatch(
+  ///   entries: entries,
+  ///   autorename: false,
+  /// );
+  /// print(result);
+  /// ```
+  ///
+  /// Note: This route will either finish synchronously or return a job ID to perform the copy job asynchronously in the background.
+  /// Please use `copyBatchCheck` to check the job status.
   Future<Map<String, dynamic>> copyBatch({
     required List<Map<String, String>> entries,
     bool autorename = false,
@@ -80,6 +142,30 @@ class DropboxFile {
     }
   }
 
+  /// Returns the status of an asynchronous job for copying multiple files or folders.
+  ///
+  /// This function queries the Dropbox API endpoint for checking the status of a copy batch job:
+  /// `https://api.dropboxapi.com/2/files/copy_batch/check_v2`
+  ///
+  /// Parameters:
+  /// - [asyncJobId]: The ID of the asynchronous job. This is the value returned from the method that launched the job.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If the job is still in progress, {'success': true, 'status': 'in_progress'}.
+  /// - If the job is complete, {'success': true, 'result': response body}.
+  /// - If there's an error or the job doesn't exist, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final asyncJobId = "34g93hh34h04y384084"; // Replace with the actual async job ID
+  /// final result = await dropboxFile.copyBatchCheck(asyncJobId);
+  /// print(result);
+  /// ```
+  ///
+  /// Note: Use this method to check the status of a copy batch job launched using the `copyBatch` method.
   Future<Map<String, dynamic>> copyBatchCheck(String asyncJobId) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -103,6 +189,27 @@ class DropboxFile {
     }
   }
 
+  /// Gets a copy reference to a file or folder.
+  ///
+  /// This function queries the Dropbox API endpoint to obtain a copy reference to a file or folder:
+  /// `https://api.dropboxapi.com/2/files/copy_reference/get`
+  ///
+  /// Parameters:
+  /// - [filePath]: The path to the file or folder for which a copy reference is to be obtained.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'success': true, 'result': response body}.
+  /// - If there's an error, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final filePath = "/video.mp4"; // Replace with the actual file path
+  /// final result = await dropboxFile.getCopyReference(filePath);
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> getCopyReference(String filePath) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -126,6 +233,30 @@ class DropboxFile {
     }
   }
 
+  /// Save a copy reference returned by `copyReferenceGet` to the user's Dropbox.
+  ///
+  /// This function utilizes the Dropbox API endpoint for saving a copy reference:
+  /// `https://api.dropboxapi.com/2/files/copy_reference/save`
+  ///
+  /// Parameters:
+  /// - [copyReference]: A copy reference returned by `copyReferenceGet`.
+  /// - [destinationPath]: Path in the user's Dropbox where the file or folder should be saved.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'success': true, 'result': response body}.
+  /// - If there's an error, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final copyReference = "z1X6ATl6aWtzOGq0c3g5Ng"; // Replace with the actual copy reference
+  /// final destinationPath = "/video.mp4"; // Replace with the actual destination path
+  ///
+  /// final result = await dropboxFile.saveCopyReference(copyReference, destinationPath);
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> saveCopyReference(String copyReference, String destinationPath) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -150,6 +281,27 @@ class DropboxFile {
     }
   }
 
+  /// Create a folder at a given path in the user's Dropbox.
+  ///
+  /// This function uses the Dropbox API endpoint for creating a folder:
+  /// `https://api.dropboxapi.com/2/files/create_folder_v2`
+  ///
+  /// Parameters:
+  /// - [folderPath]: Path in the user's Dropbox to create the folder.
+  /// - [autorename]: If there's a conflict, attempt to autorename the folder to avoid the conflict. Default is `false`.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'success': true, 'result': response body}.
+  /// - If there's an error, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.createFolder('/Homework/math', autorename: false);
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> createFolder(String folderPath, {bool autorename = false}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -173,6 +325,31 @@ class DropboxFile {
       return {'success': false, 'error': response.body};
     }
   }
+
+  /// Create multiple folders at once in the user's Dropbox.
+  ///
+  /// This function utilizes the Dropbox API endpoint for creating multiple folders:
+  /// `https://api.dropboxapi.com/2/files/create_folder_batch`
+  ///
+  /// Parameters:
+  /// - [folderPaths]: List of paths to be created in the user's Dropbox.
+  /// - [autorename]: If there's a conflict, attempt to autorename the folder to avoid the conflict. Default is `false`.
+  /// - [forceAsync]: Whether to force the create to happen asynchronously. Default is `false`.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'success': true, 'result': response body}.
+  /// - If there's an error, {'success': false, 'error': response body}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.createFolderBatch(['/Homework/math'], autorename: false, forceAsync: false);
+  /// print(result);
+  /// ```
+  ///
+  /// Note: This route is asynchronous for large batches and returns a job ID immediately. Use `createFolderBatchCheck` to check the job status.
 
   Future<Map<String, dynamic>> createFolderBatch(List<String> folderPaths, {bool autorename = false, bool forceAsync = false}) async {
     final headers = {
@@ -199,6 +376,27 @@ class DropboxFile {
     }
   }
 
+  /// Returns the status of an asynchronous job for create_folder_batch.
+  ///
+  /// This function uses the Dropbox API endpoint for checking the status of a create folder batch job:
+  /// `https://api.dropboxapi.com/2/files/create_folder_batch/check`
+  ///
+  /// Parameters:
+  /// - [asyncJobId]: Id of the asynchronous job. This is the value of a response returned from the method that launched the job.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If the job is complete, {'status': 'complete', 'entries': response entries}.
+  /// - If the job is in progress, {'status': 'in_progress'}.
+  /// - If there's an error or another status, {'status': 'other', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.checkCreateFolderBatchJobStatus('34g93hh34h04y384084');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> checkCreateFolderBatchJobStatus(String asyncJobId) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -228,6 +426,27 @@ class DropboxFile {
     }
   }
 
+  /// Delete the file or folder at a given path in the user's Dropbox.
+  ///
+  /// This function uses the Dropbox API endpoint for deleting a file or folder:
+  /// `https://api.dropboxapi.com/2/files/delete_v2`
+  ///
+  /// Parameters:
+  /// - [path]: Path in the user's Dropbox to delete.
+  /// - [parentRev]: Perform delete if given "rev" matches the existing file's latest "rev". This field is optional.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'status': 'success', 'metadata': response metadata}.
+  /// - If there's an error, {'status': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.deleteFileOrFolder('/Homework/math/Prime_Numbers.txt');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> deleteFileOrFolder(String path, {String parentRev = ""}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -253,6 +472,30 @@ class DropboxFile {
       return {'status': 'error', 'error': errorData};
     }
   }
+
+  /// Delete multiple files/folders at once in the user's Dropbox.
+  ///
+  /// This function uses the Dropbox API endpoint for deleting multiple files:
+  /// `https://api.dropboxapi.com/2/files/delete_batch`
+  ///
+  /// Parameters:
+  /// - [paths]: List of paths to be deleted in the user's Dropbox.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If the delete operation is complete, {'status': 'complete', 'entries': response entries}.
+  /// - If the delete operation is asynchronous, {'status': 'async', 'async_job_id': response async job id}.
+  /// - If there's an error or another status, {'status': 'other', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.deleteFilesBatch(['/Homework/math/Prime_Numbers.txt']);
+  /// print(result);
+  /// ```
+  ///
+  /// Note: This route is asynchronous, and you may need to check the job status using `deleteBatchCheck`.
 
   Future<Map<String, dynamic>> deleteFilesBatch(List<String> paths) async {
     final headers = {
@@ -284,6 +527,27 @@ class DropboxFile {
     }
   }
 
+  /// Returns the status of an asynchronous job for delete_batch.
+  ///
+  /// This function uses the Dropbox API endpoint for checking the status of a delete batch job:
+  /// `https://api.dropboxapi.com/2/files/delete_batch/check`
+  ///
+  /// Parameters:
+  /// - [asyncJobId]: Id of the asynchronous job. This is the value of a response returned from the method that launched the job.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If the job is complete, {'status': 'complete', 'entries': response entries}.
+  /// - If the job is in progress, {'status': 'in_progress'}.
+  /// - If there's an error or another status, {'status': 'other', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.deleteBatchCheck('34g93hh34h04y384084');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> deleteBatchCheck(String asyncJobId) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -313,6 +577,26 @@ class DropboxFile {
     }
   }
 
+  /// Download a file from a user's Dropbox.
+  ///
+  /// This function uses the Dropbox API endpoint for downloading a file:
+  /// `https://content.dropboxapi.com/2/files/download`
+  ///
+  /// Parameters:
+  /// - [path]: The path of the file to download.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'metadata': response metadata, 'file_contents': response file contents as Uint8List}.
+  /// - If there's an error, {'status': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.downloadFile('/Homework/math/Prime_Numbers.txt');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> downloadFile(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -339,6 +623,26 @@ class DropboxFile {
     }
   }
 
+  /// Download a folder from the user's Dropbox, as a zip file.
+  ///
+  /// This function uses the Dropbox API endpoint for downloading a folder as a zip file:
+  /// `https://content.dropboxapi.com/2/files/download_zip`
+  ///
+  /// Parameters:
+  /// - [path]: The path of the folder to download.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'metadata': response metadata}.
+  /// - If there's an error, {'status': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.downloadFolderAsZip('/Homework/math');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> downloadFolderAsZip(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -363,6 +667,27 @@ class DropboxFile {
     }
   }
 
+  /// Export a file from a user's Dropbox.
+  ///
+  /// This function uses the Dropbox API endpoint for exporting a file:
+  /// `https://content.dropboxapi.com/2/files/export`
+  ///
+  /// Parameters:
+  /// - [path]: The path of the file to be exported.
+  /// - [exportFormat]: The file format to which the file should be exported (optional).
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'export_metadata': response export metadata, 'file_metadata': response file metadata}.
+  /// - If there's an error, {'status': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.exportFile('/Homework/math/Prime_Numbers.gsheet');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> exportFile(String path, {String? exportFormat}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -392,6 +717,26 @@ class DropboxFile {
     }
   }
 
+  /// Return the lock metadata for the given list of paths.
+  ///
+  /// This function uses the Dropbox API endpoint for getting file lock metadata in batch:
+  /// `https://api.dropboxapi.com/2/files/get_file_lock_batch`
+  ///
+  /// Parameters:
+  /// - [paths]: List of paths to get lock metadata for.
+  ///
+  /// Returns a [Future] with a [List<Map<String, dynamic>>]:
+  /// - For each entry in the batch, {'status': 'success', 'lock': entry lock, 'metadata': entry metadata} on success.
+  /// - For each entry in the batch, {'status': 'error', 'error': entry error} on error.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.getFileLockBatch(['/John Doe/sample/test.pdf']);
+  /// print(result);
+  /// ```
   Future<List<Map<String, dynamic>>> getFileLockBatch(List<String> paths) async {
     final entries = paths.map((path) => {'path': path}).toList();
     final requestData = {'entries': entries};
@@ -436,6 +781,29 @@ class DropboxFile {
     }
   }
 
+  /// Returns the metadata for a file or folder.
+  ///
+  /// This function uses the Dropbox API endpoint for getting metadata:
+  /// `https://api.dropboxapi.com/2/files/get_metadata`
+  ///
+  /// Parameters:
+  /// - [path]: The path of a file or folder on Dropbox.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If the item is a file, {'type': 'file', 'metadata': response metadata}.
+  /// - If the item is a folder, {'type': 'folder', 'metadata': response metadata}.
+  /// - If the item is deleted, {'type': 'deleted', 'metadata': response metadata}.
+  /// - If the item is unknown, {'type': 'unknown', 'metadata': response metadata}.
+  /// - If there's an error, {'type': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.getMetadata('/Homework/math');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> getMetadata(String path) async {
     final requestData = {
       'include_deleted': false,
@@ -487,6 +855,26 @@ class DropboxFile {
     }
   }
 
+  /// Get a preview for a file.
+  ///
+  /// This function uses the Dropbox API endpoint for getting a file preview:
+  /// `https://content.dropboxapi.com/2/files/get_preview`
+  ///
+  /// Parameters:
+  /// - [path]: The path of the file to preview.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'type': 'success', 'metadata': response metadata}.
+  /// - If there's an error, {'type': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.getPreview('/word.docx');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> getPreview(String path) async {
     final requestData = {
       'path': path,
@@ -516,6 +904,26 @@ class DropboxFile {
     }
   }
 
+  /// Get a temporary link to stream content of a file.
+  ///
+  /// This function uses the Dropbox API endpoint for getting a temporary link:
+  /// `https://api.dropboxapi.com/2/files/get_temporary_link`
+  ///
+  /// Parameters:
+  /// - [path]: The path to the file you want a temporary link to.
+  ///
+  /// Returns a [Future] with a [Map<String, dynamic>]:
+  /// - If successful, {'type': 'success', 'data': response data}.
+  /// - If there's an error, {'type': 'error', 'error': response data}.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxFile = DropboxFile(dropboxApp);
+  ///
+  /// final result = await dropboxFile.getTemporaryLink('/video.mp4');
+  /// print(result);
+  /// ```
   Future<Map<String, dynamic>> getTemporaryLink(String path) async {
     final requestData = {
       'path': path,
