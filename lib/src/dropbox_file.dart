@@ -5,6 +5,58 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+/// PathOrLink (union)
+/// Information specifying which file to preview. This could be a path to a file, a shared link pointing to a file, or a shared link pointing to a folder, with a relative path.
+///
+/// `path` - String(pattern="(/(.|[\r\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)")
+/// `link` - SharedLinkFileInfo. Consult the Dropbox API docs for details. https://www.dropbox.com/developers/documentation/http/documentation#files-get_thumbnail
+enum PathOrLink { path, link }
+
+/// QualityField is only returned for "internal" callers. Quality of the thumbnail image.
+///
+/// - `quality_80` -  default thumbnail quality.
+/// - `quality_90` -  high thumbnail quality.
+enum ThumbnailQuality { quality_80, quality_90 }
+
+/// ThumbnailFormat (union)
+/// How to resize and crop the image to achieve the desired size.
+///
+/// `strict`         - Scale down the image to fit within the given size.
+/// `bestfit`        - Scale down the image to fit within the given size or its transpose.
+/// `fitone_bestfit` - Scale down the image to completely cover the given size or its transpose.
+// ignore: constant_identifier_names
+enum ThumbnailMode { strict, bestfit, fitone_bestfit }
+
+/// ThumbnailSize (union)
+/// ThumbnailSizeThe size for the thumbnail image.
+///
+/// `w32h32`    -  32 by 32 px.
+/// `w64h64`    -  64 by 64 px.
+/// `w128h128`  -  128 by 128 px.
+/// `w256h256`  -  256 by 256 px.
+/// `w480h320`  -  480 by 320 px.
+/// `w640h480`  -  640 by 480 px.
+/// `w960h640`  -  960 by 640 px.
+/// `w1024h768` - 1024 by 768 px.
+/// `w2048h1536`- 2048 by 1536 px.
+/// `w3200h2400`- Field is only returned for "internal" callers. 3200 by 2400 px.
+enum ThumbnailSize {
+  w32h32,
+  w64h64,
+  w128h128,
+  w256h256,
+  w480h320,
+  w640h480,
+  w960h640,
+  w1024h768,
+  w2048h1536,
+  w3200h2400,
+}
+
+/// ThumbnailFormat (union)
+/// The format for the thumbnail image, jpeg (default) or png. For images that are photos, jpeg should be preferred, while png is better for screenshots and digital arts.
+enum ThumbnailFormat { jpeg, png }
+
 /// WriteMode (union)
 /// Your intent when writing a file to some path. This is used to determine what constitutes a conflict and what the autorename strategy is. In some situations, the conflict behavior is identical:
 /// (a) If the target path doesn't refer to anything, the file is always written; no conflict.
@@ -783,17 +835,32 @@ class DropboxFile {
     }
   }
 
+  /// Get a one-time use temporary upload link to upload a file to a Dropbox location.
+  /// This endpoint acts as a delayed upload.
+  ///
+  /// Readme more in https://www.dropbox.com/developers/documentation/http/documentation#files-get_temporary_upload_link
+  ///
+  /// Parameters:
+  /// - [path]: The path to the file you want a temporary upload link to.
+  /// - [autorename]: If true, the returned temporary upload link will have
+  ///   an autorename suffix.
+  /// - [mode]: The mode of the returned temporary upload link.
+  /// - [mute]: If true, no notifications will be sent on changes to this file.
+  /// - [strictConflict]: If true, an error will be raised in the case of
+  ///   name collision.
+  /// - [duration]: The duration of the returned temporary upload link.
+  ///
   Future<Map<String, dynamic>> getTemporaryUploadLink(
     String path, {
     bool autorename = true,
-    String mode = 'add',
+    WriteMode mode = WriteMode.add,
     bool mute = false,
     bool strictConflict = false,
     int duration = 3600,
   }) async {
     final commitInfo = {
       'autorename': autorename,
-      'mode': mode,
+      'mode': mode.name,
       'mute': mute,
       'path': path,
       'strict_conflict': strictConflict,
@@ -830,22 +897,40 @@ class DropboxFile {
     }
   }
 
+  /// Get a thumbnail for an image.
+  ///
+  /// This method supports files with the following file extensions:
+  /// jpg, jpeg, png, tiff, tif, gif, webp, ppm, and bmp. Photos larger than 20MB
+  /// won't be converted to a thumbnail.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = await getThumbnailV2('/a.docx');
+  /// print(result);
+  /// ```
+  ///
+  /// [path]: The path to the image file.
+  /// [format]: The format for the thumbnail image, either 'jpeg' (default) or 'png'.
+  /// [mode]: How to resize and crop the image to achieve the desired size.
+  /// [quality]: Quality of the thumbnail image. Default is 'quality_80'.
+  /// [size]: The size for the thumbnail image. Default is 'w64h64'.
   Future<Map<String, dynamic>> getThumbnailV2(
     String path, {
-    String format = 'jpeg',
-    String mode = 'strict',
-    String quality = 'quality_80',
-    String size = 'w64h64',
+    ThumbnailFormat format = ThumbnailFormat.jpeg,
+    ThumbnailMode mode = ThumbnailMode.strict,
+    ThumbnailQuality quality = ThumbnailQuality.quality_80,
+    ThumbnailSize size = ThumbnailSize.w64h64,
+    PathOrLink pathOrLink = PathOrLink.path,
   }) async {
     final requestData = {
-      'format': format,
-      'mode': mode,
-      'quality': quality,
+      'format': format.name,
+      'mode': mode.name,
+      'quality': quality.name,
       'resource': {
-        '.tag': 'path',
+        '.tag': pathOrLink.name,
         'path': path,
       },
-      'size': size,
+      'size': size.name,
     };
 
     final headers = {
