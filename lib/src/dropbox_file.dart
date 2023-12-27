@@ -1430,27 +1430,30 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionAppend(String sessionID, int offset, File file) async {
-    final fileLength = await file.length();
-    final fileStream = http.ByteStream(file.openRead());
-
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('https://content.dropboxapi.com/2/files/upload_session/append_v2'),
-    )
-      ..headers['Authorization'] = 'Bearer ${_dropbox.accessToken}'
-      ..headers['Dropbox-API-Arg'] = jsonEncode({
-        'close': false,
+  Future<Map<String, dynamic>> uploadSessionAppend(
+    File file, {
+    required String sessionID,
+    required int offset,
+    bool close = false,
+  }) async {
+    final headers = {
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
+      'Content-Type': 'application/octet-stream',
+      'Dropbox-API-Arg': jsonEncode({
+        'close': close,
         'cursor': {
           'offset': offset,
           'session_id': sessionID,
         },
-      })
-      ..headers['Content-Type'] = 'application/octet-stream'
-      ..headers['Content-Length'] = fileLength.toString()
-      ..send(fileStream);
+      }),
+    };
 
-    final response = await http.Response.fromStream(await request.send());
+    Uint8List data = await file.readAsBytes();
+    final response = await http.post(
+      Uri.parse('https://content.dropboxapi.com/2/files/upload_session/append_v2'),
+      headers: headers,
+      body: data,
+    );
 
     if (response.statusCode == 200) {
       return {'type': 'success'};
