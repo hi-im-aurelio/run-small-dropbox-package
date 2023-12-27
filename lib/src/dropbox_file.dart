@@ -1278,19 +1278,12 @@ class DropboxFile {
 
     final response = await request.send();
 
-    // FIXME: Resolva o retorno.
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(await response.stream.bytesToString());
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'error': responseData};
     } else {
       final Map<String, dynamic> errorData = jsonDecode(await response.stream.bytesToString());
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': errorData};
     }
   }
 
@@ -1334,19 +1327,12 @@ class DropboxFile {
 
     final response = await request.send();
 
-    // FIXME: Resolva o retorno.
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(await response.stream.bytesToString());
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'error': responseData};
     } else {
       final Map<String, dynamic> errorData = jsonDecode(await response.stream.bytesToString());
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': errorData};
     }
   }
 
