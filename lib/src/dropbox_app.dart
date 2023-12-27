@@ -1,6 +1,11 @@
 class DropboxApp {
-  // Temporary access token. Only for testing purposes.
-  String accessToken = 'sl.BsPiSibVN02hv0j4uQaUUqFf-8ezOToGqWOtSxlMevT217x2EkcZSpc-vMMEIbNT46CaVhJJQSNtagUy1PLoRTF_mwhWqQjiN_mdg2IOfNzE2vOXS-1nvtYgC9cEdxgQLqbs7AYnZoPpL2VuO29HHS8';
+  DropboxApp._();
 
-  static DropboxApp initializeApp() => DropboxApp();
+  static final DropboxApp _instance = DropboxApp._();
+
+  factory DropboxApp() {
+    return _instance;
+  }
+
+  String get accessToken => 'YOUR_TOKEN_HERE';
 }

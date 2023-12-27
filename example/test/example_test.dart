@@ -2,8 +2,8 @@ import 'package:run_small_dropbox/run_small_dropbox.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Dropbox File', () {
-    final dropboxApp = DropboxApp.initializeApp();
+  group('Dropbox File', () async {
+    final dropboxApp = await Dropbox.initializeApp();
 
     final dropboxFile = DropboxFile(dropboxApp);
 
