@@ -635,6 +635,9 @@ class DropboxFile {
   ///
   /// Parameters:
   /// - [path]: The path of a file or folder on Dropbox.
+  /// - [includeDeleted]: Whether to include deleted items in the response (optional).
+  /// - [includeHasExplicitSharedMembers]: Whether to include has_explicit_shared_members in the response (optional).
+  /// - [includeMediaInfo]: Whether to include mediaInfo in the response (optional).
   ///
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If the item is a file, {'type': 'file', 'metadata': response metadata}.
@@ -643,11 +646,16 @@ class DropboxFile {
   /// - If the item is unknown, {'type': 'unknown', 'metadata': response metadata}.
   /// - If there's an error, {'type': 'error', 'error': response data}.
   ///
-  Future<Map<String, dynamic>> getMetadata(String path) async {
+  Future<Map<String, dynamic>> getMetadata(
+    String path, {
+    bool includeDeleted = false,
+    bool includeHasExplicitSharedMembers = false,
+    bool includeMediaInfo = false,
+  }) async {
     final requestData = {
-      'include_deleted': false,
-      'include_has_explicit_shared_members': false,
-      'include_media_info': false,
+      'include_deleted': includeDeleted,
+      'include_has_explicit_shared_members': includeHasExplicitSharedMembers,
+      'include_media_info': includeMediaInfo,
       'path': path,
     };
     final headers = {
