@@ -1018,14 +1018,39 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> listFolder(String path,
-      {bool includeDeleted = false,
-      bool includeHasExplicitSharedMembers = false,
-      bool includeMediaInfo = false,
-      bool includeMountedFolders = true,
-      bool includeNonDownloadableFiles = true,
-      bool recursive = false,
-      int limit = 100}) async {
+  /// Starts returning the contents of a folder.
+  ///
+  /// If the result's ListFolderResult.has_more field is true, call list_folder/continue
+  /// with the returned ListFolderResult.cursor to retrieve more entries.
+  ///
+  /// Note: auth.RateLimitError may be returned if multiple list_folder or list_folder/continue
+  /// calls with the same parameters are made simultaneously by the same API app for the same user.
+  ///
+  /// `path`: A unique identifier for the file.
+  ///
+  /// `includeDeleted`: If true, the results will include entries for files and folders that used to exist but were deleted.
+  ///
+  /// `includeHasExplicitSharedMembers`: If true, the results will include a flag for each file indicating whether or not that file has any explicit members.
+  ///
+  /// `includeMediaInfo`: Deprecated. If true, FileMetadata.media_info is set for photo and video.
+  ///
+  /// `includeMountedFolders`: If true, the results will include entries under mounted folders, which include the app folder, shared folder, and team folder.
+  ///
+  /// `includeNonDownloadableFiles`: If true, include files that are not downloadable, i.e., Google Docs. Default is true.
+  ///
+  /// `recursive`: If true, the list folder operation will be applied recursively to all subfolders.
+  ///
+  /// `limit`: The maximum number of results to return per request. This is an approximate number.
+  Future<Map<String, dynamic>> listFolder(
+    String path, {
+    bool includeDeleted = false,
+    bool includeHasExplicitSharedMembers = false,
+    bool includeMediaInfo = false,
+    bool includeMountedFolders = true,
+    bool includeNonDownloadableFiles = true,
+    bool recursive = false,
+    int limit = 100,
+  }) async {
     final requestData = {
       'path': path,
       'include_deleted': includeDeleted,
