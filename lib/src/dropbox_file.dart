@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:universal_io/io.dart';
 import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
@@ -816,7 +816,7 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> listRevisions(String accessToken, String path, {int limit = 10, String mode = 'path'}) async {
+  Future<Map<String, dynamic>> listRevisions(String path, {int limit = 10, String mode = 'path'}) async {
     final requestData = {
       'limit': limit,
       'mode': mode,
@@ -824,7 +824,7 @@ class DropboxFile {
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -849,13 +849,13 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> lockFileBatch(String accessToken, List<String> filePaths) async {
+  Future<Map<String, dynamic>> lockFileBatch(List<String> filePaths) async {
     final requestData = {
       'entries': filePaths.map((path) => {'path': path}).toList(),
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -880,7 +880,7 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> moveV2(String accessToken, String fromPath, String toPath, {bool allowOwnershipTransfer = false, bool allowSharedFolder = false, bool autorename = false}) async {
+  Future<Map<String, dynamic>> moveV2(String fromPath, String toPath, {bool allowOwnershipTransfer = false, bool allowSharedFolder = false, bool autorename = false}) async {
     final requestData = {
       'allow_ownership_transfer': allowOwnershipTransfer,
       'allow_shared_folder': allowSharedFolder, // Deprecated, has no effect
@@ -890,7 +890,7 @@ class DropboxFile {
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -915,7 +915,7 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> moveBatchV2(String accessToken, List<Map<String, String>> entries, {bool allowOwnershipTransfer = false, bool autorename = false}) async {
+  Future<Map<String, dynamic>> moveBatchV2(List<Map<String, String>> entries, {bool allowOwnershipTransfer = false, bool autorename = false}) async {
     final requestData = {
       'allow_ownership_transfer': allowOwnershipTransfer,
       'autorename': autorename,
@@ -923,7 +923,7 @@ class DropboxFile {
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -948,13 +948,13 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> moveBatchCheckV2(String accessToken, String asyncJobId) async {
+  Future<Map<String, dynamic>> moveBatchCheckV2(String asyncJobId) async {
     final requestData = {
       'async_job_id': asyncJobId,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -979,14 +979,14 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> paperCreate(String accessToken, String importFormat, String path, String localFilePath) async {
+  Future<Map<String, dynamic>> paperCreate(String importFormat, String path, String localFilePath) async {
     final requestData = {
       'import_format': importFormat,
       'path': path,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Dropbox-API-Arg': jsonEncode(requestData),
       'Content-Type': 'application/octet-stream',
     };
@@ -1025,7 +1025,7 @@ class DropboxFile {
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Dropbox-API-Arg': jsonEncode(requestData),
       'Content-Type': 'application/octet-stream',
     };
@@ -1055,14 +1055,14 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> permanentlyDelete(String accessToken, String path, {String? parentRev}) async {
+  Future<Map<String, dynamic>> permanentlyDelete(String path, {String? parentRev}) async {
     final requestData = {
       'path': path,
       'parent_rev': parentRev,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1086,14 +1086,14 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> restoreFile(String accessToken, String path, String rev) async {
+  Future<Map<String, dynamic>> restoreFile(String path, String rev) async {
     final requestData = {
       'path': path,
       'rev': rev,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1118,14 +1118,14 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> saveUrl(String accessToken, String path, String url) async {
+  Future<Map<String, dynamic>> saveUrl(String path, String url) async {
     final requestData = {
       'path': path,
       'url': url,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1150,13 +1150,13 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> checkJobStatus(String accessToken, String asyncJobId) async {
+  Future<Map<String, dynamic>> checkJobStatus(String asyncJobId) async {
     final requestData = {
       'async_job_id': asyncJobId,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1181,7 +1181,7 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> searchFiles(String accessToken, String query, String path) async {
+  Future<Map<String, dynamic>> searchFiles(String query, String path) async {
     final requestData = {
       'query': query,
       'options': {
@@ -1196,7 +1196,7 @@ class DropboxFile {
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1221,13 +1221,13 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> searchContinue(String accessToken, String cursor) async {
+  Future<Map<String, dynamic>> searchContinue(String cursor) async {
     final requestData = {
       'cursor': cursor,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1252,14 +1252,14 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> addTag(String accessToken, String filePath, String tagText) async {
+  Future<Map<String, dynamic>> addTag(String filePath, String tagText) async {
     final requestData = {
       'path': filePath,
       'tag_text': tagText,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1282,13 +1282,13 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> getTags(String accessToken, List<String> filePaths) async {
+  Future<Map<String, dynamic>> getTags(List<String> filePaths) async {
     final requestData = {
       'paths': filePaths,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1313,14 +1313,14 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> removeTag(String accessToken, String filePath, String tagText) async {
+  Future<Map<String, dynamic>> removeTag(String filePath, String tagText) async {
     final requestData = {
       'path': filePath,
       'tag_text': tagText,
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1343,13 +1343,13 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> unlockFileBatch(String accessToken, List<String> filePaths) async {
+  Future<Map<String, dynamic>> unlockFileBatch(List<String> filePaths) async {
     final requestData = {
       'entries': filePaths.map((path) => {'path': path}).toList(),
     };
 
     final headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1374,7 +1374,7 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadFile(String accessToken, String filePath, String destinationPath) async {
+  Future<Map<String, dynamic>> uploadFile(String filePath, String destinationPath) async {
     final file = File(filePath);
     final fileLength = await file.length();
     final fileStream = http.ByteStream(file.openRead());
@@ -1383,7 +1383,7 @@ class DropboxFile {
       'POST',
       Uri.parse('https://content.dropboxapi.com/2/files/upload'),
     )
-      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..headers['Authorization'] = 'Bearer ${_dropbox.accessToken}'
       ..headers['Dropbox-API-Arg'] = jsonEncode({
         'autorename': false,
         'mode': 'add',
@@ -1412,7 +1412,7 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionAppend(String accessToken, String sessionID, int offset, File file) async {
+  Future<Map<String, dynamic>> uploadSessionAppend(String sessionID, int offset, File file) async {
     final fileLength = await file.length();
     final fileStream = http.ByteStream(file.openRead());
 
@@ -1420,7 +1420,7 @@ class DropboxFile {
       'POST',
       Uri.parse('https://content.dropboxapi.com/2/files/upload_session/append_v2'),
     )
-      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..headers['Authorization'] = 'Bearer ${_dropbox.accessToken}'
       ..headers['Dropbox-API-Arg'] = jsonEncode({
         'close': false,
         'cursor': {
@@ -1445,12 +1445,12 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionFinish(String accessToken, String sessionID, int offset, String path) async {
+  Future<Map<String, dynamic>> uploadSessionFinish(String sessionID, int offset, String path) async {
     final request = http.Request(
       'POST',
       Uri.parse('https://content.dropboxapi.com/2/files/upload_session/finish'),
     )
-      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..headers['Authorization'] = 'Bearer ${_dropbox.accessToken}'
       ..headers['Dropbox-API-Arg'] = jsonEncode({
         'commit': {
           'autorename': true,
@@ -1483,10 +1483,10 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionFinishBatch(String accessToken, List<Map<String, dynamic>> entries) async {
+  Future<Map<String, dynamic>> uploadSessionFinishBatch(List<Map<String, dynamic>> entries) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/finish_batch_v2');
     final Map<String, String> headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1514,10 +1514,10 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionFinishBatchCheck(String accessToken, String asyncJobId) async {
+  Future<Map<String, dynamic>> uploadSessionFinishBatchCheck(String asyncJobId) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/finish_batch/check');
     final Map<String, String> headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
@@ -1556,10 +1556,10 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionStart(String accessToken, String localFilePath) async {
+  Future<Map<String, dynamic>> uploadSessionStart(String localFilePath) async {
     final Uri uri = Uri.parse('https://content.dropboxapi.com/2/files/upload_session/start');
     final Map<String, String> headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/octet-stream',
       'Dropbox-API-Arg': '{"close": false}',
     };
@@ -1588,10 +1588,10 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionStartBatch(String accessToken, int numSessions) async {
+  Future<Map<String, dynamic>> uploadSessionStartBatch(int numSessions) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/start_batch');
     final Map<String, String> headers = {
-      'Authorization': 'Bearer $accessToken',
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
