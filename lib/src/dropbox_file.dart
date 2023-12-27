@@ -19,17 +19,6 @@ import 'dropbox_app.dart';
 /// `update` - Overwrite if the given "rev" matches the existing file's "rev". The supplied value should be the latest known "rev" of the file, for example, from FileMetadata, from when the file was last downloaded by the app. This will cause the file on the Dropbox servers to be overwritten if the given "rev" matches the existing file's current "rev" on the Dropbox servers. The autorename strategy is to append the string "conflicted copy" to the file name. For example, "document.txt" might become "document (conflicted copy).txt" or "document (Panda's conflicted copy).txt".
 enum WriteMode { add, overwrite, update }
 
-enum DropboxUrlType {
-  download(''),
-  preview(''),
-  getTemporaryLink('https://api.dropboxapi.com/2/files/get_temporary_link'),
-  copyV2('https://api.dropboxapi.com/2/files/copy_v2');
-
-  const DropboxUrlType(this.url);
-
-  final String url;
-}
-
 class DropboxFile {
   final DropboxApp _dropbox;
 
@@ -55,7 +44,7 @@ class DropboxFile {
       'autorename': autorename,
     };
 
-    final response = await http.post(Uri.parse(DropboxUrlType.copyV2.url), headers: headers, body: jsonEncode(body));
+    final response = await http.post(Uri.parse('https://api.dropboxapi.com/2/files/copy_v2'), headers: headers, body: jsonEncode(body));
 
     if (response.statusCode == 200) {
       return {'success': true, 'metadata': response.body};
