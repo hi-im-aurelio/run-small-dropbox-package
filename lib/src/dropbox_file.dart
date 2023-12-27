@@ -42,7 +42,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.copyFile(
@@ -98,7 +98,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final entries = [
@@ -157,7 +157,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final asyncJobId = "34g93hh34h04y384084"; // Replace with the actual async job ID
@@ -203,7 +203,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final filePath = "/video.mp4"; // Replace with the actual file path
@@ -248,7 +248,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final copyReference = "z1X6ATl6aWtzOGq0c3g5Ng"; // Replace with the actual copy reference
@@ -296,7 +296,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.createFolder('/Homework/math', autorename: false);
@@ -342,7 +342,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.createFolderBatch(['/Homework/math'], autorename: false, forceAsync: false);
@@ -391,7 +391,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.checkCreateFolderBatchJobStatus('34g93hh34h04y384084');
@@ -441,7 +441,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.deleteFileOrFolder('/Homework/math/Prime_Numbers.txt');
@@ -488,7 +488,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.deleteFilesBatch(['/Homework/math/Prime_Numbers.txt']);
@@ -542,7 +542,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.deleteBatchCheck('34g93hh34h04y384084');
@@ -591,7 +591,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.downloadFile('/Homework/math/Prime_Numbers.txt');
@@ -637,7 +637,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.downloadFolderAsZip('/Homework/math');
@@ -682,7 +682,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.exportFile('/Homework/math/Prime_Numbers.gsheet');
@@ -731,7 +731,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.getFileLockBatch(['/John Doe/sample/test.pdf']);
@@ -798,7 +798,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.getMetadata('/Homework/math');
@@ -869,7 +869,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.getPreview('/word.docx');
@@ -918,7 +918,7 @@ class DropboxFile {
   ///
   /// Example:
   /// ```dart
-  /// final dropboxApp = DropboxApp(/* ... */); // Your initialization parameters here
+  /// final dropboxApp = DropboxApp();
   /// final dropboxFile = DropboxFile(dropboxApp);
   ///
   /// final result = await dropboxFile.getTemporaryLink('/video.mp4');
