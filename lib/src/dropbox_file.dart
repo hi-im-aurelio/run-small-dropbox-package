@@ -386,17 +386,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-      if (responseData['.tag'] == 'complete') {
-        return {'status': 'complete', 'entries': responseData['entries']};
-      } else if (responseData['.tag'] == 'in_progress') {
-        return {'status': 'in_progress'};
-      } else {
-        return {'status': 'other', 'error': responseData};
-      }
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      return {'status': 'error', 'error': response.body};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -430,11 +422,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {'status': 'success', 'metadata': responseData['metadata']};
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {'status': 'error', 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -466,17 +456,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      if (responseData['.tag'] == 'complete') {
-        return {'status': 'complete', 'entries': responseData['entries']};
-      } else if (responseData['.tag'] == 'async_job_id') {
-        return {'status': 'async', 'async_job_id': responseData['async_job_id']};
-      } else {
-        return {'status': 'other'};
-      }
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {'status': 'error', 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -507,17 +489,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      if (responseData['.tag'] == 'complete') {
-        return {'status': 'complete', 'entries': responseData['entries']};
-      } else if (responseData['.tag'] == 'in_progress') {
-        return {'status': 'in_progress'};
-      } else {
-        return {'status': 'other'};
-      }
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {'status': 'error', 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -544,17 +518,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.headers['dropbox-api-result']!);
-      final Uint8List fileContents = response.bodyBytes;
-
-      // Pode retornar ou processar os dados conforme necessário
-      return {
-        'metadata': responseData,
-        'file_contents': fileContents,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {'status': 'error', 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -581,15 +547,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.headers['dropbox-api-result']!);
-
-      // Pode retornar ou processar os dados conforme necessário
-      return {
-        'metadata': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {'status': 'error', 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -621,16 +581,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.headers['dropbox-api-result']!);
-
-      // Pode retornar ou processar os dados conforme necessário
-      return {
-        'export_metadata': responseData['export_metadata'],
-        'file_metadata': responseData['file_metadata'],
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {'status': 'error', 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -646,7 +599,7 @@ class DropboxFile {
   /// - For each entry in the batch, {'status': 'success', 'lock': entry lock, 'metadata': entry metadata} on success.
   /// - For each entry in the batch, {'status': 'error', 'error': entry error} on error.
   ///
-  Future<List<Map<String, dynamic>>> getFileLockBatch(List<String> paths) async {
+  Future<Map<String, dynamic>> getFileLockBatch(List<String> paths) async {
     final entries = paths.map((path) => {'path': path}).toList();
     final requestData = {'entries': entries};
     final headers = {
@@ -661,32 +614,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final List<Map<String, dynamic>> lockResults = [];
-
-      final List<dynamic> responseData = jsonDecode(response.body)['entries'];
-      for (final entry in responseData) {
-        if (entry['.tag'] == 'success') {
-          final Map<String, dynamic> lockData = {
-            'status': 'success',
-            'lock': entry['lock'],
-            'metadata': entry['metadata'],
-          };
-          lockResults.add(lockData);
-        } else {
-          final Map<String, dynamic> errorData = {
-            'status': 'error',
-            'error': entry['error'],
-          };
-          lockResults.add(errorData);
-        }
-      }
-
-      return lockResults;
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return [
-        {'status': 'error', 'error': errorData},
-      ];
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -727,35 +657,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-      if (responseData['.tag'] == 'file') {
-        return {
-          'type': 'file',
-          'metadata': responseData,
-        };
-      } else if (responseData['.tag'] == 'folder') {
-        return {
-          'type': 'folder',
-          'metadata': responseData,
-        };
-      } else if (responseData['.tag'] == 'deleted') {
-        return {
-          'type': 'deleted',
-          'metadata': responseData,
-        };
-      } else {
-        return {
-          'type': 'unknown',
-          'metadata': responseData,
-        };
-      }
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -785,17 +689,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'metadata': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -826,17 +722,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -888,17 +776,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -947,17 +827,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1005,19 +877,10 @@ class DropboxFile {
       headers: headers,
       body: jsonEncode(requestData),
     );
-
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1077,17 +940,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1112,17 +967,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1169,17 +1016,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1216,17 +1055,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1264,17 +1095,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1303,17 +1126,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1355,17 +1170,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1405,17 +1212,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1439,19 +1238,10 @@ class DropboxFile {
       headers: headers,
       body: jsonEncode(requestData),
     );
-
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1488,6 +1278,7 @@ class DropboxFile {
 
     final response = await request.send();
 
+    // FIXME: Resolva o retorno.
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(await response.stream.bytesToString());
       return {
@@ -1543,6 +1334,7 @@ class DropboxFile {
 
     final response = await request.send();
 
+    // FIXME: Resolva o retorno.
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(await response.stream.bytesToString());
       return {
@@ -1582,16 +1374,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {
-        'type': 'success',
-        'data': {},
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1616,19 +1401,10 @@ class DropboxFile {
       headers: headers,
       body: jsonEncode(requestData),
     );
-
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': data,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1658,17 +1434,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': data,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1693,17 +1461,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': data,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1742,19 +1502,10 @@ class DropboxFile {
       headers: headers,
       body: jsonEncode(requestData),
     );
-
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': data,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1778,17 +1529,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': data,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1812,17 +1555,10 @@ class DropboxFile {
       headers: headers,
       body: jsonEncode(requestData),
     );
-
     if (response.statusCode == 200) {
-      return {
-        'type': 'success',
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1846,17 +1582,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1883,15 +1611,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {
-        'type': 'success',
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData,
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1920,17 +1642,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'entries': responseData['entries'],
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1979,17 +1693,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'fileMetadata': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -2034,13 +1740,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {'type': 'success'};
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -2088,17 +1790,9 @@ class DropboxFile {
     final response = await http.Response.fromStream(await request.send());
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -2133,17 +1827,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -2168,28 +1854,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      if (responseData['.tag'] == 'complete') {
-        return {
-          'type': 'complete',
-          'data': responseData,
-        };
-      } else if (responseData['.tag'] == 'in_progress') {
-        return {
-          'type': 'in_progress',
-        };
-      } else {
-        return {
-          'type': 'error',
-          'error': responseData['error'],
-        };
-      }
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -2236,17 +1903,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -2274,17 +1933,9 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return {
-        'type': 'success',
-        'data': responseData,
-      };
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(response.body);
-      return {
-        'type': 'error',
-        'error': errorData['error'],
-      };
+      return {'success': false, 'error': response.body};
     }
   }
 }
