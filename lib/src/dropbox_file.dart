@@ -5,6 +5,20 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+/// WriteMode (union)
+/// Your intent when writing a file to some path. This is used to determine what constitutes a conflict and what the autorename strategy is. In some situations, the conflict behavior is identical:
+/// (a) If the target path doesn't refer to anything, the file is always written; no conflict.
+/// (b) If the target path refers to a folder, it's always a conflict.
+/// (c) If the target path refers to a file with identical contents, nothing gets written; no conflict.
+/// The conflict checking differs in the case where there's a file at the target path with contents different from the contents you're trying to write.
+///
+/// `add` - Do not overwrite an existing file if there is a conflict. The autorename strategy is to append a number to the file name. For example, "document.txt" might become "document (2).txt".
+///
+/// `overwrite` - Always overwrite the existing file. The autorename strategy is the same as it is for add.
+///
+/// `update` - Overwrite if the given "rev" matches the existing file's "rev". The supplied value should be the latest known "rev" of the file, for example, from FileMetadata, from when the file was last downloaded by the app. This will cause the file on the Dropbox servers to be overwritten if the given "rev" matches the existing file's current "rev" on the Dropbox servers. The autorename strategy is to append the string "conflicted copy" to the file name. For example, "document.txt" might become "document (conflicted copy).txt" or "document (Panda's conflicted copy).txt".
+enum WriteMode { add, overwrite, update }
+
 enum DropboxUrlType {
   download(''),
   preview(''),
@@ -1374,28 +1388,32 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadFile(String filePath, String destinationPath) async {
-    final file = File(filePath);
-    final fileLength = await file.length();
-    final fileStream = http.ByteStream(file.openRead());
-
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('https://content.dropboxapi.com/2/files/upload'),
-    )
-      ..headers['Authorization'] = 'Bearer ${_dropbox.accessToken}'
-      ..headers['Dropbox-API-Arg'] = jsonEncode({
-        'autorename': false,
-        'mode': 'add',
-        'mute': false,
+  Future<Map<String, dynamic>> uploadFile(
+    File file, {
+    required String destinationPath,
+    WriteMode mode = WriteMode.add,
+    bool autorename = false,
+    bool mute = false,
+    bool strictConflict = false,
+  }) async {
+    final headers = {
+      'Authorization': 'Bearer ${_dropbox.accessToken}',
+      'Content-type': 'application/octet-stream',
+      'Dropbox-API-Arg': jsonEncode({
         'path': destinationPath,
-        'strict_conflict': false,
-      })
-      ..headers['Content-Type'] = 'application/octet-stream'
-      ..headers['Content-Length'] = fileLength.toString()
-      ..send(fileStream);
+        'mode': mode.name,
+        'autorename': autorename,
+        'mute': mute,
+        'strict_conflict': strictConflict,
+      }),
+    };
 
-    final response = await http.Response.fromStream(await request.send());
+    Uint8List data = await file.readAsBytes();
+    final response = await http.post(
+      Uri.parse('https://content.dropboxapi.com/2/files/upload'),
+      body: data,
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
