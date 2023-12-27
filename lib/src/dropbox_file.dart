@@ -9,16 +9,18 @@ import 'dropbox_app.dart';
 /// Information specifying which file to preview. This could be a path to a file, a shared link pointing to a file, or a shared link pointing to a folder, with a relative path.
 ///
 /// `path` - String(pattern="(/(.|[\r\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)")
-/// `link` - SharedLinkFileInfo. Consult the Dropbox API docs for details. https://www.dropbox.com/developers/documentation/http/documentation#files-get_thumbnail
+/// `link` - SharedLinkFileInfo.
+///
+/// Consult the Dropbox API docs for details. https://www.dropbox.com/developers/documentation/http/documentation#files-get_thumbnail
 enum PathOrLink { path, link }
 
-/// QualityField is only returned for "internal" callers. Quality of the thumbnail image.
+/// ThumbnailQuality is only returned for "internal" callers. Quality of the thumbnail image.
 ///
 /// - `quality_80` -  default thumbnail quality.
 /// - `quality_90` -  high thumbnail quality.
 enum ThumbnailQuality { quality_80, quality_90 }
 
-/// ThumbnailFormat (union)
+/// ThumbnailMode (union)
 /// How to resize and crop the image to achieve the desired size.
 ///
 /// `strict`         - Scale down the image to fit within the given size.
@@ -54,8 +56,8 @@ enum ThumbnailSize {
 }
 
 /// ThumbnailFormat (union)
-/// The format for the thumbnail image, jpeg (default) or png. For images that are photos, jpeg should be preferred, while png is better for screenshots and digital arts.
-enum ThumbnailFormat { jpeg, png }
+/// For images that are photos, jpeg should be preferred, while png is better for screenshots and digital arts.
+enum ThumbnailFormat { jpeg, png, jpg, tiff, tif, gif, webp, ppm, bmp }
 
 /// WriteMode (union)
 /// Your intent when writing a file to some path. This is used to determine what constitutes a conflict and what the autorename strategy is. In some situations, the conflict behavior is identical:
@@ -899,21 +901,19 @@ class DropboxFile {
 
   /// Get a thumbnail for an image.
   ///
+  /// Photos larger than 20MB won't be converted to a thumbnail.
+  ///
   /// This method supports files with the following file extensions:
-  /// jpg, jpeg, png, tiff, tif, gif, webp, ppm, and bmp. Photos larger than 20MB
-  /// won't be converted to a thumbnail.
   ///
-  /// Example:
-  /// ```dart
-  /// final result = await getThumbnailV2('/a.docx');
-  /// print(result);
-  /// ```
-  ///
-  /// [path]: The path to the image file.
-  /// [format]: The format for the thumbnail image, either 'jpeg' (default) or 'png'.
-  /// [mode]: How to resize and crop the image to achieve the desired size.
-  /// [quality]: Quality of the thumbnail image. Default is 'quality_80'.
-  /// [size]: The size for the thumbnail image. Default is 'w64h64'.
+  /// - `jpg`
+  /// - `jpeg`
+  /// - `png`
+  /// - `tiff`
+  /// - `tif`
+  /// - `gif`
+  /// - `webp`
+  /// - `ppm`
+  /// - `bmp`
   Future<Map<String, dynamic>> getThumbnailV2(
     String path, {
     ThumbnailFormat format = ThumbnailFormat.jpeg,
@@ -958,13 +958,34 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> getThumbnailBatch(List<String> paths, {String format = 'jpeg', String mode = 'strict', String quality = 'quality_80', String size = 'w64h64'}) async {
+  /// Get thumbnails for a list of images.
+  ///
+  /// Photos larger than 20MB won't be converted to a thumbnail.
+  ///
+  /// This method supports files with the following file extensions:
+  ///
+  /// - `jpg`
+  /// - `jpeg`
+  /// - `png`
+  /// - `tiff`
+  /// - `tif`
+  /// - `gif`
+  /// - `webp`
+  /// - `ppm`
+  /// - `bmp`
+  Future<Map<String, dynamic>> getThumbnailBatch(
+    List<String> paths, {
+    ThumbnailFormat format = ThumbnailFormat.jpeg,
+    ThumbnailMode mode = ThumbnailMode.strict,
+    ThumbnailQuality quality = ThumbnailQuality.quality_80,
+    ThumbnailSize size = ThumbnailSize.w64h64,
+  }) async {
     final entries = paths.map((path) {
       return {
-        'format': format,
-        'mode': mode,
-        'quality': quality,
-        'size': size,
+        'format': format.name,
+        'mode': mode.name,
+        'quality': quality.name,
+        'size': size.name,
         'path': path,
       };
     }).toList();
