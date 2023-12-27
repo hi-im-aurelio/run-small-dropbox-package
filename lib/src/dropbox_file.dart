@@ -1175,6 +1175,22 @@ class DropboxFile {
     }
   }
 
+  /// A longpoll endpoint to wait for changes on an account. In conjunction with
+  /// listFolder/continue, this call gives you a low-latency way to monitor an
+  /// account for file changes. The connection will block until there are changes
+  /// available or a timeout occurs. This endpoint is useful mostly for
+  /// client-side apps. If you're looking for server-side notifications, check
+  /// out our webhooks documentation.
+  ///
+  /// `cursor`: A cursor as returned by list_folder or list_folder/continue.
+  /// Cursors retrieved by setting ListFolderArg.include_media_info to true are
+  /// not supported.
+  ///
+  /// `timeout`: A timeout in seconds. The request will block for at most this
+  /// length of time, plus up to 90 seconds of random jitter added to avoid the
+  /// thundering herd problem. Care should be taken when using this parameter,
+  /// as some network infrastructure does not support long timeouts. The default
+  /// for this field is 30.
   Future<Map<String, dynamic>> listFolderLongpoll(String cursor, int timeout) async {
     final requestData = {
       'cursor': cursor,
@@ -1206,6 +1222,21 @@ class DropboxFile {
     }
   }
 
+  /// Returns revisions for files based on a file path or a file id. The file
+  /// path or file id is identified from the latest file entry at the given
+  /// file path or id. This endpoint allows your app to query either by file
+  /// path or file id by setting the mode parameter appropriately. In the
+  /// ListRevisionsMode.path (default) mode, all revisions at the same file
+  /// path as the latest file entry are returned. If revisions with the same
+  /// file id are desired, then mode must be set to ListRevisionsMode.id. The
+  /// ListRevisionsMode.id mode is useful to retrieve revisions for a given
+  /// file across moves or renames.
+  ///
+  /// `path`: The path to the file.
+  ///
+  /// `limit`: The maximum number of revisions to return (default is 10).
+  ///
+  /// `mode`: The mode to determine whether to query by path or file id.
   Future<Map<String, dynamic>> listRevisions(String path, {int limit = 10, String mode = 'path'}) async {
     final requestData = {
       'limit': limit,
@@ -1239,6 +1270,14 @@ class DropboxFile {
     }
   }
 
+  /// Lock the files at the given paths. A locked file will be writable only
+  /// by the lock holder. A successful response indicates that the file has
+  /// been locked. Returns a list of the locked file paths and their metadata
+  /// after this operation.
+  ///
+  /// This endpoint does not support apps with the app folder permission.
+  ///
+  /// `filePaths`: List of file paths to lock.
   Future<Map<String, dynamic>> lockFileBatch(List<String> filePaths) async {
     final requestData = {
       'entries': filePaths.map((path) => {'path': path}).toList(),
@@ -1270,6 +1309,23 @@ class DropboxFile {
     }
   }
 
+  /// Move a file or folder to a different location in the user's Dropbox. If
+  /// the source path is a folder all its contents will be moved. Note that
+  /// we do not currently support case-only renaming.
+  ///
+  /// `fromPath`: Path in the user's Dropbox to be copied or moved.
+  ///
+  /// `toPath`: Path in the user's Dropbox that is the destination.
+  ///
+  /// `allowOwnershipTransfer`: Allow moves by owner even if it would result
+  /// in an ownership transfer for the content being moved. This does not apply
+  /// to copies. The default for this field is False.
+  ///
+  /// `allowSharedFolder`: Deprecated. This flag has no effect. The default for
+  /// this field is False.
+  ///
+  /// `autorename`: If there's a conflict, have the Dropbox server try to
+  /// autorename the file to avoid the conflict. The default for this field is False.
   Future<Map<String, dynamic>> moveV2(String fromPath, String toPath, {bool allowOwnershipTransfer = false, bool allowSharedFolder = false, bool autorename = false}) async {
     final requestData = {
       'allow_ownership_transfer': allowOwnershipTransfer,
@@ -1305,6 +1361,23 @@ class DropboxFile {
     }
   }
 
+  /// Move multiple files or folders to different locations at once in the user's
+  /// Dropbox. Note that we do not currently support case-only renaming. This route
+  /// will replace move_batch:1. The main difference is this route will return
+  /// status for each entry, while move_batch:1 raises failure if any entry fails.
+  /// This route will either finish synchronously, or return a job ID and do the
+  /// async move job in the background. Please use move_batch/check:2 to check
+  /// the job status.
+  ///
+  /// `entries`: List of entries to be moved or copied. Each entry is RelocationPath.
+  ///
+  /// `allowOwnershipTransfer`: Allow moves by owner even if it would result
+  /// in an ownership transfer for the content being moved. This does not apply
+  /// to copies. The default for this field is False.
+  ///
+  /// `autorename`: If there's a conflict with any file, have the Dropbox server
+  /// try to autorename that file to avoid the conflict. The default for this
+  /// field is False.
   Future<Map<String, dynamic>> moveBatchV2(List<Map<String, String>> entries, {bool allowOwnershipTransfer = false, bool autorename = false}) async {
     final requestData = {
       'allow_ownership_transfer': allowOwnershipTransfer,
@@ -1338,6 +1411,11 @@ class DropboxFile {
     }
   }
 
+  /// Returns the status of an asynchronous job for move_batch:2. It returns a list
+  /// of results for each entry.
+  ///
+  /// `asyncJobId`: Id of the asynchronous job. This is the value of a response
+  /// returned from the method that launched the job.
   Future<Map<String, dynamic>> moveBatchCheckV2(String asyncJobId) async {
     final requestData = {
       'async_job_id': asyncJobId,
@@ -1369,6 +1447,17 @@ class DropboxFile {
     }
   }
 
+  /// Creates a new Paper doc with the provided content.
+  ///
+  /// This endpoint does not support apps with the app folder permission.
+  ///
+  /// `importFormat`: The format of the provided data.
+  ///
+  /// `path`: The fully qualified path to the location in the user's Dropbox
+  /// where the Paper Doc should be created. This should include the document's
+  /// title and end with .paper.
+  ///
+  /// `localFilePath`: The local file path for the content.
   Future<Map<String, dynamic>> paperCreate(String importFormat, String path, String localFilePath) async {
     final requestData = {
       'import_format': importFormat,
@@ -1406,6 +1495,22 @@ class DropboxFile {
     }
   }
 
+  /// Updates an existing Paper doc with the provided content.
+  ///
+  /// This endpoint does not support apps with the app folder permission.
+  ///
+  /// `docUpdatePolicy`: How the provided content should be applied to the doc.
+  ///
+  /// `importFormat`: The format of the provided data.
+  ///
+  /// `paperRevision`: The latest doc revision. Required when docUpdatePolicy is
+  /// update. This value must match the current revision of the doc or error
+  /// revision_mismatch will be returned. This field is optional.
+  ///
+  /// `path`: Path in the user's Dropbox to update. The path must correspond to
+  /// a Paper doc or an error will be returned.
+  ///
+  /// `localFilePath`: The local file path for the content.
   Future<Map<String, dynamic>> paperUpdate(String docUpdatePolicy, String importFormat, int paperRevision, String path, String localFilePath) async {
     final requestData = {
       'doc_update_policy': docUpdatePolicy,
@@ -1445,6 +1550,12 @@ class DropboxFile {
     }
   }
 
+  /// Permanently delete the file or folder at a given path.
+  ///
+  /// `path`: Path in the user's Dropbox to delete.
+  ///
+  /// `parentRev`: Perform delete if given "rev" matches the existing file's
+  /// latest "rev". This field does not support deleting a folder. This field is optional.
   Future<Map<String, dynamic>> permanentlyDelete(String path, {String? parentRev}) async {
     final requestData = {
       'path': path,
