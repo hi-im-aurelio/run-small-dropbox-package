@@ -5,6 +5,14 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+/// FileStatus (union)
+///
+/// Restricts search to the given file status
+///
+/// `active` - The file or folder is active.
+/// `deleted` - The file or folder was deleted.
+enum FileStatus { active, deleted }
+
 /// PathOrLink (union)
 /// Information specifying which file to preview. This could be a path to a file, a shared link pointing to a file, or a shared link pointing to a folder, with a relative path.
 ///
@@ -1587,6 +1595,11 @@ class DropboxFile {
     }
   }
 
+  /// Restore a specific revision of a file to the given path.
+  ///
+  /// `path`: The path to the file.
+  /// `rev`: The revision of the file to restore.
+  ///
   Future<Map<String, dynamic>> restoreFile(String path, String rev) async {
     final requestData = {
       'path': path,
@@ -1619,6 +1632,14 @@ class DropboxFile {
     }
   }
 
+  /// Save the data from a specified URL into a file in the user's Dropbox.
+  /// Note that the transfer from the URL must complete within 15 minutes,
+  /// or the operation will time out, and the job will fail. If the given path
+  /// already exists, the file will be renamed to avoid the conflict (e.g., myfile (1).txt).
+  ///
+  /// `path`]: The path in the user's Dropbox where the file should be saved.
+  /// `url`]: The URL from which to save the file.
+  ///
   Future<Map<String, dynamic>> saveUrl(String path, String url) async {
     final requestData = {
       'path': path,
@@ -1651,6 +1672,10 @@ class DropboxFile {
     }
   }
 
+  /// Check the status of a save_url job.
+  ///
+  /// `asyncJobId`: The asynchronous job ID returned by the save_url operation.
+  ///
   Future<Map<String, dynamic>> checkJobStatus(String asyncJobId) async {
     final requestData = {
       'async_job_id': asyncJobId,
@@ -1682,17 +1707,28 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> searchFiles(String query, String path) async {
+  /// Searches for files and folders.
+  ///
+  /// `query`: The search query.
+  /// `path`: The path to search within.
+  Future<Map<String, dynamic>> searchFiles(
+    String query, {
+    required String path,
+    bool includeHighlights = false,
+    bool filenameOnly = false,
+    int maxResults = 10,
+    FileStatus fileStatus = FileStatus.active,
+  }) async {
     final requestData = {
       'query': query,
       'options': {
-        'file_status': 'active',
-        'filename_only': false,
-        'max_results': 20,
+        'file_status': fileStatus.name,
+        'filename_only': filenameOnly,
+        'max_results': maxResults,
         'path': path,
       },
       'match_field_options': {
-        'include_highlights': false,
+        'include_highlights': includeHighlights,
       },
     };
 
@@ -1722,6 +1758,9 @@ class DropboxFile {
     }
   }
 
+  /// Fetches the next page of search results returned from search:2.
+  ///
+  /// `cursor`: The cursor from the previous search response.
   Future<Map<String, dynamic>> searchContinue(String cursor) async {
     final requestData = {
       'cursor': cursor,
@@ -1753,6 +1792,10 @@ class DropboxFile {
     }
   }
 
+  /// Add a tag to an item. A tag is a string.
+  ///
+  /// `filePath`: The path to the item.
+  /// `tagText`: The tag text to add.
   Future<Map<String, dynamic>> addTag(String filePath, String tagText) async {
     final requestData = {
       'path': filePath,
@@ -1783,6 +1826,9 @@ class DropboxFile {
     }
   }
 
+  /// Get a list of tags assigned to items.
+  ///
+  /// `filePaths`: List of file paths to get tags for.
   Future<Map<String, dynamic>> getTags(List<String> filePaths) async {
     final requestData = {
       'paths': filePaths,
@@ -1814,6 +1860,11 @@ class DropboxFile {
     }
   }
 
+  /// Remove a tag from an item.
+  ///
+  /// `filePath`: The path to the item.
+  /// `tagText`: The tag text to remove.
+  ///
   Future<Map<String, dynamic>> removeTag(String filePath, String tagText) async {
     final requestData = {
       'path': filePath,
@@ -1844,6 +1895,14 @@ class DropboxFile {
     }
   }
 
+  /// Unlock the files at the given paths. A locked file can only be unlocked by the
+  /// lock holder or, if a business account, a team admin. A successful response
+  /// indicates that the file has been unlocked. Returns a list of the unlocked file
+  /// paths and their metadata after this operation.
+  ///
+  /// This endpoint does not support apps with the app folder permission.
+  ///
+  /// `filePaths`: List of file paths to unlock.
   Future<Map<String, dynamic>> unlockFileBatch(List<String> filePaths) async {
     final requestData = {
       'entries': filePaths.map((path) => {'path': path}).toList(),
@@ -1875,6 +1934,23 @@ class DropboxFile {
     }
   }
 
+  /// Create a new file with the contents provided in the request. Do not use this
+  /// to upload a file larger than 150 MB. Instead, create an upload session with
+  /// upload_session/start. Calls to this endpoint will count as data transport calls
+  /// for any Dropbox Business teams with a limit on the number of data transport
+  /// calls allowed per month. For more information, see the Data transport limit page.
+  ///
+  /// `file`: The file to be uploaded.
+  ///
+  /// `destinationPath`: The path in the user's Dropbox where the file should be created.
+  ///
+  /// `mode`: The write mode for the file.
+  ///
+  /// `autorename`: If there's a conflict, have the Dropbox server try to autorename the file.
+  ///
+  /// `mute`: Whether to mute notifications.
+  ///
+  /// `strictConflict`: Whether to enforce strict conflict checking.
   Future<Map<String, dynamic>> uploadFile(
     File file, {
     required String destinationPath,
@@ -1917,6 +1993,21 @@ class DropboxFile {
     }
   }
 
+  /// Append more data to an upload session. When the parameter close is set, this
+  /// call will close the session. A single request should not upload more than 150 MB.
+  /// The maximum size of a file one can upload to an upload session is 350 GB.
+  /// Calls to this endpoint will count as data transport calls for any Dropbox Business
+  /// teams with a limit on the number of data transport calls allowed per month.
+  /// For more information, see the Data transport limit page.
+  ///
+  /// `file`: The file to be appended.
+  ///
+  /// `sessionID`: The ID of the upload session.
+  ///
+  /// `offset`: The byte offset at which the data should be appended.
+  ///
+  /// `close`: Whether to close the session after appending the data.
+  ///
   Future<Map<String, dynamic>> uploadSessionAppend(
     File file, {
     required String sessionID,
@@ -1953,7 +2044,27 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionFinish(String sessionID, int offset, String path) async {
+  /// Finish an upload session and save the uploaded data to the given file path.
+  /// A single request should not upload more than 150 MB. The maximum size of a file
+  /// one can upload to an upload session is 350 GB. Calls to this endpoint will count
+  /// as data transport calls for any Dropbox Business teams with a limit on the number
+  /// of data transport calls allowed per month. For more information, see the Data transport limit page.
+  ///
+  /// `sessionID`: The ID of the upload session.
+  ///
+  /// `offset`: The byte offset at which the data should be saved.
+  ///
+  /// `path`: The path in the user's Dropbox where the file should be saved.
+  ///
+  Future<Map<String, dynamic>> uploadSessionFinish(
+    String sessionID,
+    int offset,
+    String path, {
+    bool autorename = false,
+    bool mute = false,
+    bool strictConflict = false,
+    WriteMode mode = WriteMode.add,
+  }) async {
     final request = http.Request(
       'POST',
       Uri.parse('https://content.dropboxapi.com/2/files/upload_session/finish'),
@@ -1961,11 +2072,11 @@ class DropboxFile {
       ..headers['Authorization'] = 'Bearer ${_dropbox.accessToken}'
       ..headers['Dropbox-API-Arg'] = jsonEncode({
         'commit': {
-          'autorename': true,
-          'mode': 'add',
-          'mute': false,
+          'autorename': autorename,
+          'mode': mode.name,
+          'mute': mute,
           'path': path,
-          'strict_conflict': false,
+          'strict_conflict': strictConflict,
         },
         'cursor': {
           'offset': offset,
@@ -1991,6 +2102,20 @@ class DropboxFile {
     }
   }
 
+  /// This route helps you commit many files at once into a user's Dropbox. Use
+  /// upload_session/start and upload_session/append:2 to upload file contents.
+  /// We recommend uploading many files in parallel to increase throughput.
+  /// Once the file contents have been uploaded, rather than calling
+  /// upload_session/finish, use this route to finish all your upload sessions
+  /// in a single request. UploadSessionStartArg.close or UploadSessionAppendArg.close
+  /// needs to be true for the last upload_session/start or upload_session/append:2
+  /// call of each upload session. The maximum size of a file one can upload to an
+  /// upload session is 350 GB. We allow up to 1000 entries in a single request.
+  /// Calls to this endpoint will count as data transport calls for any Dropbox Business
+  /// teams with a limit on the number of data transport calls allowed per month.
+  /// For more information, see the Data transport limit page.
+  ///
+  /// `entries`: List of entries containing the session ID, offset, and path. 'error'.
   Future<Map<String, dynamic>> uploadSessionFinishBatch(List<Map<String, dynamic>> entries) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/finish_batch_v2');
     final Map<String, String> headers = {
@@ -2022,6 +2147,10 @@ class DropboxFile {
     }
   }
 
+  /// Returns the status of an asynchronous job for upload_session/finish_batch.
+  /// If success, it returns a list of results for each entry.
+  ///
+  /// `asyncJobId`: The asynchronous job ID.
   Future<Map<String, dynamic>> uploadSessionFinishBatchCheck(String asyncJobId) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/finish_batch/check');
     final Map<String, String> headers = {
@@ -2064,12 +2193,37 @@ class DropboxFile {
     }
   }
 
-  Future<Map<String, dynamic>> uploadSessionStart(String localFilePath) async {
+  /// Upload sessions allow you to upload a single file in one or more requests, for example
+  /// where the size of the file is greater than 150 MB. This call starts a new upload session
+  /// with the given data. You can then use upload_session/append:2 to add more data and
+  /// upload_session/finish to save all the data to a file in Dropbox. A single request should
+  /// not upload more than 150 MB. The maximum size of a file one can upload to an upload
+  /// session is 350 GB. An upload session can be used for a maximum of 7 days. Attempting
+  /// to use an UploadSessionStartResult.session_id with upload_session/append:2 or
+  /// upload_session/finish more than 7 days after its creation will return a
+  /// UploadSessionLookupError.not_found. Calls to this endpoint will count as data transport
+  /// calls for any Dropbox Business teams with a limit on the number of data transport
+  /// calls allowed per month. For more information, see the Data transport limit page.
+  ///
+  /// By default, upload sessions require you to send content of the file in sequential order
+  /// via consecutive upload_session/start, upload_session/append:2, upload_session/finish calls.
+  /// For better performance, you can instead optionally use a UploadSessionType.concurrent upload session.
+  /// To start a new concurrent session, set UploadSessionStartArg.session_type to
+  /// UploadSessionType.concurrent. After that, you can send file data in concurrent
+  /// upload_session/append:2 requests. Finally finish the session with upload_session/finish.
+  /// There are couple of constraints with concurrent sessions to make them work.
+  /// You can not send data with upload_session/start or upload_session/finish call,
+  /// only with upload_session/append:2 call. Also data uploaded in upload_session/append:2
+  /// call must be a multiple of 4194304 bytes (except for the last upload_session/append:2
+  /// with UploadSessionStartArg.close set to true, that may contain any remaining data).
+  ///
+  /// `localFilePath`: The local file path to upload.
+  Future<Map<String, dynamic>> uploadSessionStart(String localFilePath, {bool close = false}) async {
     final Uri uri = Uri.parse('https://content.dropboxapi.com/2/files/upload_session/start');
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/octet-stream',
-      'Dropbox-API-Arg': '{"close": false}',
+      'Dropbox-API-Arg': '{"close": $close}',
     };
 
     final File file = File(localFilePath);
@@ -2096,6 +2250,12 @@ class DropboxFile {
     }
   }
 
+  /// This route starts a batch of upload sessions. Please refer to `upload_session/start` usage.
+  /// Calls to this endpoint will count as data transport calls for any Dropbox Business teams
+  /// with a limit on the number of data transport calls allowed per month.
+  /// For more information, see the Data transport limit page.
+  ///
+  /// `numSessions`: The number of upload sessions to start.
   Future<Map<String, dynamic>> uploadSessionStartBatch(int numSessions) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/start_batch');
     final Map<String, String> headers = {
