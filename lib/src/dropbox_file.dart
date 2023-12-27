@@ -40,20 +40,6 @@ class DropboxFile {
   /// - If successful, {'success': true, 'metadata': response body}.
   /// - If there's an error, {'success': false, 'error': response body}.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.copyFile(
-  ///   fromPath: '/Homework/math',
-  ///   toPath: '/Homework/algebra',
-  ///   allowOwnershipTransfer: false,
-  ///   allowSharedFolder: false,
-  ///   autorename: false,
-  /// );
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> copyFile({
     required String fromPath,
     required String toPath,
@@ -95,23 +81,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'success': true, 'result': response body}.
   /// - If there's an error, {'success': false, 'error': response body}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final entries = [
-  ///   {'from_path': '/Homework/math', 'to_path': '/Homework/algebra'},
-  ///   // Add more entries as needed
-  /// ];
-  ///
-  /// final result = await dropboxFile.copyBatch(
-  ///   entries: entries,
-  ///   autorename: false,
-  /// );
-  /// print(result);
-  /// ```
   ///
   /// Note: This route will either finish synchronously or return a job ID to perform the copy job asynchronously in the background.
   /// Please use `copyBatchCheck` to check the job status.
@@ -155,16 +124,6 @@ class DropboxFile {
   /// - If the job is complete, {'success': true, 'result': response body}.
   /// - If there's an error or the job doesn't exist, {'success': false, 'error': response body}.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final asyncJobId = "34g93hh34h04y384084"; // Replace with the actual async job ID
-  /// final result = await dropboxFile.copyBatchCheck(asyncJobId);
-  /// print(result);
-  /// ```
-  ///
   /// Note: Use this method to check the status of a copy batch job launched using the `copyBatch` method.
   Future<Map<String, dynamic>> copyBatchCheck(String asyncJobId) async {
     final headers = {
@@ -201,15 +160,6 @@ class DropboxFile {
   /// - If successful, {'success': true, 'result': response body}.
   /// - If there's an error, {'success': false, 'error': response body}.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final filePath = "/video.mp4"; // Replace with the actual file path
-  /// final result = await dropboxFile.getCopyReference(filePath);
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> getCopyReference(String filePath) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -246,17 +196,6 @@ class DropboxFile {
   /// - If successful, {'success': true, 'result': response body}.
   /// - If there's an error, {'success': false, 'error': response body}.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final copyReference = "z1X6ATl6aWtzOGq0c3g5Ng"; // Replace with the actual copy reference
-  /// final destinationPath = "/video.mp4"; // Replace with the actual destination path
-  ///
-  /// final result = await dropboxFile.saveCopyReference(copyReference, destinationPath);
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> saveCopyReference(String copyReference, String destinationPath) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -293,15 +232,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'success': true, 'result': response body}.
   /// - If there's an error, {'success': false, 'error': response body}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.createFolder('/Homework/math', autorename: false);
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> createFolder(String folderPath, {bool autorename = false}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -339,16 +269,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'success': true, 'result': response body}.
   /// - If there's an error, {'success': false, 'error': response body}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.createFolderBatch(['/Homework/math'], autorename: false, forceAsync: false);
-  /// print(result);
-  /// ```
-  ///
   /// Note: This route is asynchronous for large batches and returns a job ID immediately. Use `createFolderBatchCheck` to check the job status.
 
   Future<Map<String, dynamic>> createFolderBatch(List<String> folderPaths, {bool autorename = false, bool forceAsync = false}) async {
@@ -389,14 +309,6 @@ class DropboxFile {
   /// - If the job is in progress, {'status': 'in_progress'}.
   /// - If there's an error or another status, {'status': 'other', 'error': response data}.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.checkCreateFolderBatchJobStatus('34g93hh34h04y384084');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> checkCreateFolderBatchJobStatus(String asyncJobId) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -438,15 +350,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'status': 'success', 'metadata': response metadata}.
   /// - If there's an error, {'status': 'error', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.deleteFileOrFolder('/Homework/math/Prime_Numbers.txt');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> deleteFileOrFolder(String path, {String parentRev = ""}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -485,18 +388,6 @@ class DropboxFile {
   /// - If the delete operation is complete, {'status': 'complete', 'entries': response entries}.
   /// - If the delete operation is asynchronous, {'status': 'async', 'async_job_id': response async job id}.
   /// - If there's an error or another status, {'status': 'other', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.deleteFilesBatch(['/Homework/math/Prime_Numbers.txt']);
-  /// print(result);
-  /// ```
-  ///
-  /// Note: This route is asynchronous, and you may need to check the job status using `deleteBatchCheck`.
-
   Future<Map<String, dynamic>> deleteFilesBatch(List<String> paths) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -539,15 +430,6 @@ class DropboxFile {
   /// - If the job is complete, {'status': 'complete', 'entries': response entries}.
   /// - If the job is in progress, {'status': 'in_progress'}.
   /// - If there's an error or another status, {'status': 'other', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.deleteBatchCheck('34g93hh34h04y384084');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> deleteBatchCheck(String asyncJobId) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -588,15 +470,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'metadata': response metadata, 'file_contents': response file contents as Uint8List}.
   /// - If there's an error, {'status': 'error', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.downloadFile('/Homework/math/Prime_Numbers.txt');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> downloadFile(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -634,15 +507,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'metadata': response metadata}.
   /// - If there's an error, {'status': 'error', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.downloadFolderAsZip('/Homework/math');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> downloadFolderAsZip(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -679,15 +543,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'export_metadata': response export metadata, 'file_metadata': response file metadata}.
   /// - If there's an error, {'status': 'error', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.exportFile('/Homework/math/Prime_Numbers.gsheet');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> exportFile(String path, {String? exportFormat}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -729,14 +584,6 @@ class DropboxFile {
   /// - For each entry in the batch, {'status': 'success', 'lock': entry lock, 'metadata': entry metadata} on success.
   /// - For each entry in the batch, {'status': 'error', 'error': entry error} on error.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.getFileLockBatch(['/John Doe/sample/test.pdf']);
-  /// print(result);
-  /// ```
   Future<List<Map<String, dynamic>>> getFileLockBatch(List<String> paths) async {
     final entries = paths.map((path) => {'path': path}).toList();
     final requestData = {'entries': entries};
@@ -796,14 +643,6 @@ class DropboxFile {
   /// - If the item is unknown, {'type': 'unknown', 'metadata': response metadata}.
   /// - If there's an error, {'type': 'error', 'error': response data}.
   ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.getMetadata('/Homework/math');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> getMetadata(String path) async {
     final requestData = {
       'include_deleted': false,
@@ -866,15 +705,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'type': 'success', 'metadata': response metadata}.
   /// - If there's an error, {'type': 'error', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.getPreview('/word.docx');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> getPreview(String path) async {
     final requestData = {
       'path': path,
@@ -915,15 +745,6 @@ class DropboxFile {
   /// Returns a [Future] with a [Map<String, dynamic>]:
   /// - If successful, {'type': 'success', 'data': response data}.
   /// - If there's an error, {'type': 'error', 'error': response data}.
-  ///
-  /// Example:
-  /// ```dart
-  /// final dropboxApp = DropboxApp();
-  /// final dropboxFile = DropboxFile(dropboxApp);
-  ///
-  /// final result = await dropboxFile.getTemporaryLink('/video.mp4');
-  /// print(result);
-  /// ```
   Future<Map<String, dynamic>> getTemporaryLink(String path) async {
     final requestData = {
       'path': path,
