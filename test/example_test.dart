@@ -97,5 +97,135 @@ void main() async {
 
       expect(data['success'], true);
     });
+
+    test('Get Copy Reference', () async {
+      var data = await dropboxFile.getCopyReference('/Documents/movies.json');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Save Copy Reference', () async {
+      // Assuming you have a valid copy reference from a previous test
+      var data = await dropboxFile.saveCopyReference(
+        copyReference: 'copy_reference_value',
+        destinationPath: '/Documents/movies/copied_from_reference.json',
+      );
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Export File', () async {
+      var data = await dropboxFile.exportFile('/Documents/movies.json');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Get File Lock Batch', () async {
+      var data = await dropboxFile.getFileLockBatch(['/Documents/movies.json']);
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Move File Batch', () async {
+      var data = await dropboxFile.moveBatchV2([
+        {'from_path': '/Documents/movies.json', 'to_path': '/Documents/movies/movies_moved2.json'},
+        {'from_path': '/Documents/movies.json', 'to_path': '/Documents/movies/movies_moved3.json'},
+        {'from_path': '/Documents/movies.json', 'to_path': '/Documents/movies/movies_moved4.json'},
+      ]);
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Move File Batch Check Status', () async {
+      var data = await dropboxFile.moveBatchCheckV2('dbjid:AAC9mZf0d0LqyEjsxjyJAbtEWPh5lz375EWng1tZX4Hh9iMZm28SqyaELw04oGxhapZnIh5_uJ6eL0QzuKZ9bU-Z');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('List Revisions', () async {
+      var data = await dropboxFile.listRevisions('/Documents/movies.json');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Get Metadata', () async {
+      var data = await dropboxFile.getMetadata('/Documents/movies.json');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Get Preview', () async {
+      var data = await dropboxFile.getPreview('/Documents/movies.json');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Get Thumbnail V2', () async {
+      var data = await dropboxFile.getThumbnailV2('/Documents/movies.json');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('Get Thumbnail Batch', () async {
+      var data = await dropboxFile.getThumbnailBatch(['/Documents/movies.json']);
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('List Folder', () async {
+      var data = await dropboxFile.listFolder('/Documents/movies');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('List Folder Continue', () async {
+      // Assuming you have a valid cursor from a previous test
+      var data = await dropboxFile.listFolderContinue('cursor_value');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('List Folder Get Latest Cursor', () async {
+      var data = await dropboxFile.listFolderGetLatestCursor('/Documents/movies');
+
+      print(data);
+
+      expect(data['success'], true);
+    });
+
+    test('List Folder Longpoll', () async {
+      // Assuming you have a valid cursor from a previous test
+      var data = await dropboxFile.listFolderLongpoll('cursor_value', timeout: 30);
+
+      print(data);
+
+      expect(data['success'], true);
+    });
   });
 }

@@ -5,6 +5,26 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+/// PaperDocUpdatePolicy (open union)
+///
+/// How the provided content should be applied to the doc.
+///
+/// `update` - Sets the doc content to the provided content if the provided paper_revision matches the latest doc revision. Otherwise, returns an error.
+/// `overwrite` - Sets the doc content to the provided content without checking paper_revision.
+/// `prepend` - Adds the provided content to the beginning of the doc without checking paper_revision.
+/// `append` - Adds the provided content to the end of the doc without checking paper_revision.
+enum PaperDocUpdatePolicy { update, overwrite, prepend, append }
+
+/// ImportFormat (union)
+///
+/// The import format of the incoming Paper doc content.
+///
+/// `html` - The provided data is interpreted as standard HTML.
+/// `markdown` - The provided data is interpreted as markdown.
+/// `plain_text` - The provided data is interpreted as plain text.
+// ignore: constant_identifier_names
+enum ImportFormat { markdown, html, plain_text }
+
 /// FileStatus (union)
 ///
 /// Restricts search to the given file status
@@ -1038,7 +1058,7 @@ class DropboxFile {
   /// thundering herd problem. Care should be taken when using this parameter,
   /// as some network infrastructure does not support long timeouts. The default
   /// for this field is 30.
-  Future<Map<String, dynamic>> listFolderLongpoll(String cursor, int timeout) async {
+  Future<Map<String, dynamic>> listFolderLongpoll(String cursor, {int timeout = 30}) async {
     final requestData = {
       'cursor': cursor,
       'timeout': timeout,
@@ -1238,6 +1258,7 @@ class DropboxFile {
       headers: headers,
       body: jsonEncode(requestData),
     );
+
     if (response.statusCode == 200) {
       return {'success': true, 'result': jsonDecode(response.body)};
     } else {
@@ -1254,11 +1275,12 @@ class DropboxFile {
   /// `path`: The fully qualified path to the location in the user's Dropbox
   /// where the Paper Doc should be created. This should include the document's
   /// title and end with .paper.
-  ///
-  /// `localFilePath`: The local file path for the content.
-  Future<Map<String, dynamic>> paperCreate(String importFormat, String path, String localFilePath) async {
+  Future<Map<String, dynamic>> paperCreate(
+    String path, {
+    ImportFormat importFormat = ImportFormat.markdown,
+  }) async {
     final requestData = {
-      'import_format': importFormat,
+      'import_format': importFormat.name,
       'path': path,
     };
 
@@ -1268,22 +1290,16 @@ class DropboxFile {
       'Content-Type': 'application/octet-stream',
     };
 
-    final file = await http.MultipartFile.fromPath('file', localFilePath);
-    final request = http.MultipartRequest(
-      'POST',
+    final response = await http.post(
       Uri.parse('https://content.dropboxapi.com/2/files/paper/create'),
-    )
-      ..headers.addAll(headers)
-      ..files.add(file);
-
-    final response = await request.send();
+      headers: headers,
+      body: jsonEncode(requestData),
+    );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(await response.stream.bytesToString());
-      return {'success': true, 'error': responseData};
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(await response.stream.bytesToString());
-      return {'success': false, 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
@@ -1301,12 +1317,15 @@ class DropboxFile {
   ///
   /// `path`: Path in the user's Dropbox to update. The path must correspond to
   /// a Paper doc or an error will be returned.
-  ///
-  /// `localFilePath`: The local file path for the content.
-  Future<Map<String, dynamic>> paperUpdate(String docUpdatePolicy, String importFormat, int paperRevision, String path, String localFilePath) async {
+  Future<Map<String, dynamic>> paperUpdate(
+    String path, {
+    PaperDocUpdatePolicy docUpdatePolicy = PaperDocUpdatePolicy.update,
+    ImportFormat importFormat = ImportFormat.markdown,
+    int paperRevision = 0,
+  }) async {
     final requestData = {
-      'doc_update_policy': docUpdatePolicy,
-      'import_format': importFormat,
+      'doc_update_policy': docUpdatePolicy.name,
+      'import_format': importFormat.name,
       'paper_revision': paperRevision,
       'path': path,
     };
@@ -1317,22 +1336,16 @@ class DropboxFile {
       'Content-Type': 'application/octet-stream',
     };
 
-    final file = await http.MultipartFile.fromPath('file', localFilePath);
-    final request = http.MultipartRequest(
-      'POST',
+    final response = await http.post(
       Uri.parse('https://content.dropboxapi.com/2/files/paper/update'),
-    )
-      ..headers.addAll(headers)
-      ..files.add(file);
-
-    final response = await request.send();
+      headers: headers,
+      body: jsonEncode(requestData),
+    );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(await response.stream.bytesToString());
-      return {'success': true, 'error': responseData};
+      return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      final Map<String, dynamic> errorData = jsonDecode(await response.stream.bytesToString());
-      return {'success': false, 'error': errorData};
+      return {'success': false, 'error': response.body};
     }
   }
 
