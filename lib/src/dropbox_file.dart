@@ -518,7 +518,7 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {'success': true, 'result': jsonDecode(response.body)};
+      return {'success': true, 'result': response.body};
     } else {
       return {'success': false, 'error': response.body};
     }
@@ -1663,11 +1663,11 @@ class DropboxFile {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-type': 'application/octet-stream',
       'Dropbox-API-Arg': jsonEncode({
-        'path': destinationPath,
-        'mode': mode.name,
-        'autorename': autorename,
-        'mute': mute,
-        'strict_conflict': strictConflict,
+        "autorename": autorename,
+        "mode": mode.name,
+        "mute": mute,
+        "path": destinationPath,
+        "strict_conflict": strictConflict,
       }),
     };
 
