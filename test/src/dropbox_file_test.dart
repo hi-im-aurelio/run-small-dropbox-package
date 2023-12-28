@@ -69,28 +69,34 @@ void main() async {
       expect(data['success'], true);
     });
     test('deleteFileOrFolder', () async {
-      var data = await dropboxFile.deleteFileOrFolder('');
+      var data = await dropboxFile.deleteFileOrFolder('/Documents/movies');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('deleteFilesBatch', () async {
-      var data = await dropboxFile.deleteFilesBatch([]);
+      var data = await dropboxFile.deleteFilesBatch([
+        '/Documents/dev/main.dart',
+        '/Documents/dev',
+      ]);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('deleteBatchCheck', () async {
-      var data = await dropboxFile.deleteBatchCheck('');
+      var data = await dropboxFile.deleteBatchCheck('dbjid:AAC9mZf0d0LqyEjsxjyJAbtEWPh5lz375EWng1tZX4Hh9iMZm28SqyaELw04oGxhapZnIh5_uJ6eL0QzuKZ9bU-Z');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('downloadFile', () async {
-      var data = await dropboxFile.downloadFile('');
+      var data = await dropboxFile.downloadFile('/Documents/movies.json');
+
+      var file = File('C:/Users/Farioso/Desktop/file.json');
+      await file.writeAsBytes(utf8.encode(data['result']));
 
       print(data);
 
@@ -202,7 +208,7 @@ void main() async {
       expect(data['success'], true);
     });
     test('moveV2', () async {
-      var data = await dropboxFile.moveV2('', '');
+      var data = await dropboxFile.moveV2('/Documents/main.dart', '/Documents/dev/main.dart');
 
       print(data);
 
@@ -230,7 +236,7 @@ void main() async {
       expect(data['success'], true);
     });
     test('paperUpdate', () async {
-      var data = await dropboxFile.paperUpdate('', '', 0, '', '');
+      var data = await dropboxFile.paperUpdate('');
 
       print(data);
 
