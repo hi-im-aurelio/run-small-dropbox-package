@@ -110,6 +110,30 @@ enum ThumbnailFormat { jpeg, png, jpg, tiff, tif, gif, webp, ppm, bmp }
 /// `update` - Overwrite if the given "rev" matches the existing file's "rev". The supplied value should be the latest known "rev" of the file, for example, from FileMetadata, from when the file was last downloaded by the app. This will cause the file on the Dropbox servers to be overwritten if the given "rev" matches the existing file's current "rev" on the Dropbox servers. The autorename strategy is to append the string "conflicted copy" to the file name. For example, "document.txt" might become "document (conflicted copy).txt" or "document (Panda's conflicted copy).txt".
 enum WriteMode { add, overwrite, update }
 
+/// The `DropboxFile` class provides a convenient interface for interacting
+/// with the Dropbox API related to file operations.
+///
+/// It encapsulates methods to copy, move, delete, upload, and download files,
+/// as well as managing file metadata and performing batch operations.
+///
+/// This class requires a valid [DropboxApp] instance for authentication and
+/// authorization. Once initialized, you can use the various methods to perform
+/// file-related actions on the user's Dropbox account.
+///
+/// Example:
+/// ```dart
+/// DropboxApp app = await Dropbox.initializeApp();
+/// DropboxFile dropboxFile = DropboxFile(app);
+///
+/// // Copy a file
+/// var copyResult = await dropboxFile.copyFile(
+///   fromPath: '/Documents/source.txt',
+///   toPath: '/Backup/destination.txt',
+///   autorename: true,
+/// );
+///
+/// print(copyResult);
+/// ```
 class DropboxFile {
   final DropboxApp _dropbox;
 
