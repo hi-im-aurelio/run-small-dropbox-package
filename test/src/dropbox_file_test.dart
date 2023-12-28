@@ -3,6 +3,8 @@ import 'package:run_small_dropbox/run_small_dropbox.dart';
 import 'package:universal_io/io.dart';
 import 'dart:convert';
 
+// ignore: invalid_annotation_target
+@Timeout(Duration(seconds: 45))
 void main() async {
   DropboxApp app = await Dropbox.initializeApp();
   DropboxFile dropboxFile = DropboxFile(app);
@@ -27,49 +29,59 @@ void main() async {
       expect(data['success'], true);
     });
     test('copyBatchCheck', () async {
-      var data = await dropboxFile.copyBatchCheck('');
+      var data = await dropboxFile.copyBatchCheck('dbjid:AAAeL_0EYiPPSNJabLJLqdAYWSzDBghRkbYWoV2SDx9Lbg7rr9PG8_Igr_7_irFzWvaVNTeWU7r8lab3cJ9sUOsA');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getCopyReference', () async {
-      var data = await dropboxFile.getCopyReference('');
+      var data = await dropboxFile.getCopyReference('/Documents/movies.json');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('saveCopyReference', () async {
-      var data = await dropboxFile.saveCopyReference('', '');
+      String copyReference = 'AAAAAlDqCCBkYTZldjZoa3ZiOW0', path = '/Documents/ref/movies.json';
+      var data = await dropboxFile.saveCopyReference(copyReference, path);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('createFolder', () async {
-      var data = await dropboxFile.createFolder('');
+      var data = await dropboxFile.createFolder('/Downloads', autorename: false);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('createFolderBatch', () async {
-      var data = await dropboxFile.createFolderBatch([]);
+      var data = await dropboxFile.createFolderBatch(
+        [
+          '/Lib',
+        ],
+        autorename: false,
+        forceAsync: true,
+      );
 
       print(data);
 
       expect(data['success'], true);
     });
     test('checkCreateFolderBatchJobStatus', () async {
-      var data = await dropboxFile.checkCreateFolderBatchJobStatus('');
+      // For use this method, the flag forceAsync in createFolderBatch must be true
+      String asyncJobId = 'dbjid:AACIUTFyJ9SsVq7tFezji8rK-sO4GdpJ2wcn5hOUwsEw71d7hfa2aw_r9SCyiE9rxFqkwvIXmiNo5_KLTY8_LezB';
+
+      var data = await dropboxFile.checkCreateFolderBatchJobStatus(asyncJobId);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('deleteFileOrFolder', () async {
-      var data = await dropboxFile.deleteFileOrFolder('/Documents/movies');
+      var data = await dropboxFile.deleteFileOrFolder('/Lib');
 
       print(data);
 
@@ -77,8 +89,8 @@ void main() async {
     });
     test('deleteFilesBatch', () async {
       var data = await dropboxFile.deleteFilesBatch([
-        '/Documents/dev/main.dart',
-        '/Documents/dev',
+        '/System32',
+        '/Desktop',
       ]);
 
       print(data);
@@ -86,7 +98,8 @@ void main() async {
       expect(data['success'], true);
     });
     test('deleteBatchCheck', () async {
-      var data = await dropboxFile.deleteBatchCheck('dbjid:AAC9mZf0d0LqyEjsxjyJAbtEWPh5lz375EWng1tZX4Hh9iMZm28SqyaELw04oGxhapZnIh5_uJ6eL0QzuKZ9bU-Z');
+      String asyncJobId = 'dbjid:AABWTKVCz9BVnnCDelfli-hJO8ve91g7lszKeV7WmycG5kRb5F1X6kTjhYJDTekMK6IDRHZXV7R3UBY417cseFZd';
+      var data = await dropboxFile.deleteBatchCheck(asyncJobId);
 
       print(data);
 
@@ -95,26 +108,33 @@ void main() async {
     test('downloadFile', () async {
       var data = await dropboxFile.downloadFile('/Documents/movies.json');
 
-      var file = File('C:/Users/Farioso/Desktop/file.json');
-      await file.writeAsBytes(utf8.encode(data['result']));
+      if (data['success']) {
+        var file = File('C:/Users/Farioso/Desktop/file.json');
+        await file.writeAsBytes(utf8.encode(data['result']));
+      }
 
       print(data);
 
       expect(data['success'], true);
     });
     test('downloadFolderAsZip', () async {
-      var data = await dropboxFile.downloadFolderAsZip('');
+      var data = await dropboxFile.downloadFolderAsZip('/Documents');
+
+      if (data['success']) {
+        var file = File('C:/Users/Farioso/Desktop/file.zip');
+        await file.writeAsBytes(utf8.encode(data['result']));
+      }
 
       print(data);
 
       expect(data['success'], true);
     });
     test('exportFile', () async {
-      var data = await dropboxFile.exportFile('');
+      var data = await dropboxFile.exportFile('/Documents/Prime Factorization.xlsx');
 
       print(data);
 
-      expect(data['success'], true);
+      expect(data['error']['error']['.tag'], 'non_exportable');
     });
     test('getFileLockBatch', () async {
       var data = await dropboxFile.getFileLockBatch([]);
@@ -124,91 +144,105 @@ void main() async {
       expect(data['success'], true);
     });
     test('getMetadata', () async {
-      var data = await dropboxFile.getMetadata('');
+      var data = await dropboxFile.getMetadata('/Documents/movies.json');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getPreview', () async {
-      var data = await dropboxFile.getPreview('');
+      var data = await dropboxFile.getPreview('/Documents/Document.docx');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getTemporaryLink', () async {
-      var data = await dropboxFile.getTemporaryLink('');
+      var data = await dropboxFile.getTemporaryLink('/Documents/movies.json');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getTemporaryUploadLink', () async {
-      var data = await dropboxFile.getTemporaryUploadLink('');
+      var data = await dropboxFile.getTemporaryUploadLink('/Documents/favicon2_.png');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getThumbnailV2', () async {
-      var data = await dropboxFile.getThumbnailV2('');
+      var data = await dropboxFile.getThumbnailV2('/Documents/favicon2_.png');
+
+      if (data['success']) {
+        var file = File('C:/Users/Farioso/Desktop/favicon2_.jpeg');
+        await file.writeAsBytes(utf8.encode(data['result']));
+      }
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getThumbnailBatch', () async {
-      var data = await dropboxFile.getThumbnailBatch([]);
+      var data = await dropboxFile.getThumbnailBatch(['/Documents/favicon2_.png', '/Documents/favicon2_.png']);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('listFolder', () async {
-      var data = await dropboxFile.listFolder('');
+      var data = await dropboxFile.listFolder('/Documents');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('listFolderContinue', () async {
-      var data = await dropboxFile.listFolderContinue('');
+      String cursor =
+          'AAE78DDMQjfST3HwI-9agPpezcTTHtlmD7_UJ57wQnLURQfumAIwhsKp8DI5Xj9KYqvLtZqit8LnkIrRk7z8WvvinYWldfirx-bGJhwUaXSmN9oTjwczXUKl60Jv8_iXf3lhfunPIHoQMJi-sGRXs6QilXo3TcCC9Z4XpAYeXXzbgluZ2STnjWlAh5SGrani41jCXAcjsiOkb-vm6I0gQDCA1sol2wfkuFw08r2K98uT7fydz410rG9weYuIpsdskLljopKsFVeY-ZSvddzgTwqv';
+      var data = await dropboxFile.listFolderContinue(cursor);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('listFolderGetLatestCursor', () async {
-      var data = await dropboxFile.listFolderGetLatestCursor('');
+      var data = await dropboxFile.listFolderGetLatestCursor('/Documents');
 
       print(data);
 
       expect(data['success'], true);
     });
+
     test('listFolderLongpoll', () async {
-      var data = await dropboxFile.listFolderLongpoll('');
+      String cursor =
+          'AAGvWI9NjRfdjJwFCJdlQKIbRNnK35-fSUkBNn9f5TetkB217R4nufex4E_Z6l-YUG2MjWs7W5bsubiJVvKbpNHxXHfPYEAUOMIDxoMftdoJfXrofaS9wHSj59cpGV3dYvT-bOcbfdaxqBUkkJ9PhMlRASVSOwt0rFLortlgYLfBMZUd2OiBMI-6hZC2tL_YIhTq-BjTtcqcjFBqpRWmoHvjopBn7d0ULUGORCGB5PtydCg10SIAKg53YPJsstToI5TqM7q28YaZtQjP5Y_A2meX';
+      int timeout = 30;
+      var data = await dropboxFile.listFolderLongpoll(cursor, timeout: timeout);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('listRevisions', () async {
-      var data = await dropboxFile.listRevisions('');
+      var data = await dropboxFile.listRevisions('/Documents/mitologiagrega.docx');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('lockFileBatch', () async {
-      var data = await dropboxFile.lockFileBatch([]);
+      var data = await dropboxFile.lockFileBatch(['/Desktop/movies.json']);
 
       print(data);
 
-      expect(data['success'], true);
+      expect(data['success'], false);
     });
     test('moveV2', () async {
-      var data = await dropboxFile.moveV2('/Documents/main.dart', '/Documents/dev/main.dart');
+      var data = await dropboxFile.moveV2(
+        '/Documents/movies.json',
+        '/Desktop/movies.json',
+      );
 
       print(data);
 
@@ -229,7 +263,10 @@ void main() async {
       expect(data['success'], true);
     });
     test('paperCreate', () async {
-      var data = await dropboxFile.paperCreate('');
+      var data = await dropboxFile.paperCreate(
+        '/Desktop/document.paper',
+        importFormat: ImportFormat.html,
+      );
 
       print(data);
 
@@ -243,11 +280,11 @@ void main() async {
       expect(data['success'], true);
     });
     test('permanentlyDelete', () async {
-      var data = await dropboxFile.permanentlyDelete('');
+      var data = await dropboxFile.permanentlyDelete('/Desktop/movies.json');
 
       print(data);
 
-      expect(data['success'], true);
+      expect(data['success'], false);
     });
     test('restoreFile', () async {
       var data = await dropboxFile.restoreFile('', '');
@@ -271,7 +308,7 @@ void main() async {
       expect(data['success'], true);
     });
     test('searchFiles', () async {
-      var data = await dropboxFile.searchFiles('', path: '');
+      var data = await dropboxFile.searchFiles('movies');
 
       print(data);
 
@@ -285,28 +322,28 @@ void main() async {
       expect(data['success'], true);
     });
     test('addTag', () async {
-      var data = await dropboxFile.addTag('', '');
+      var data = await dropboxFile.addTag('/Desktop/movies.json', 'sdkTest');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getTags', () async {
-      var data = await dropboxFile.getTags([]);
+      var data = await dropboxFile.getTags(['/Desktop/movies.json']);
 
       print(data);
 
       expect(data['success'], true);
     });
     test('removeTag', () async {
-      var data = await dropboxFile.removeTag('', '');
+      var data = await dropboxFile.removeTag('/Desktop/movies.json', 'sdkTest');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('unlockFileBatch', () async {
-      var data = await dropboxFile.unlockFileBatch([]);
+      var data = await dropboxFile.unlockFileBatch(['/Desktop/movies.json']);
 
       print(data);
 

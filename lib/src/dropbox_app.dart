@@ -7,5 +7,5 @@ class DropboxApp {
     return _instance;
   }
 
-  String get accessToken => 'sl.BskodoRGGZGvyfrji2W_cYuRVT0aYxueE5GYb86kMKMxQYKPL_8uM0IPdVmhFqMoslchU8wIeg8DDjfW2tNJhk_F5ssAOQvSdkdicUMPu2FTXUAb9ou-AWiXgNFwKiHfULnMcLiNnkiiBAyUzCGxAMg';
+  String get accessToken => 'sl.BskAVGxH_y6qyvWFIF0Az9mR1-yTgjG3w_k5xLfoKrPmYxRIVdsJDBD4clWX7-4HTaTROEcOfH8Lhy7ORvNPTqdqxFK4HOjwzc53fsQpefLa00fjd6WJYdejeJ-sTnUK51Fm2cmHgeknU6aFbUFQvoU';
 }

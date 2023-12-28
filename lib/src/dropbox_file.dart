@@ -5,6 +5,15 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+/// ListRevisionsMode (open union)
+///
+/// Determines the behavior of the API in listing the revisions for a given file path or id. The default for this union is path.
+///
+/// `id` - Returns revisions with the same file id as identified by the latest file entry at the given file path or id.
+/// `path` - Returns revisions with the same file path as identified by the latest file entry at the given file path or id.
+///
+enum ListRevisionsMode { path, id }
+
 /// PaperDocUpdatePolicy (open union)
 ///
 /// How the provided content should be applied to the doc.
@@ -567,7 +576,7 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {'success': true, 'result': jsonDecode(response.body)};
+      return {'success': true, 'result': response.body};
     } else {
       return {'success': false, 'error': response.body};
     }
@@ -603,7 +612,7 @@ class DropboxFile {
     if (response.statusCode == 200) {
       return {'success': true, 'result': jsonDecode(response.body)};
     } else {
-      return {'success': false, 'error': response.body};
+      return {'success': false, 'error': jsonDecode(response.body)};
     }
   }
 
@@ -685,15 +694,18 @@ class DropboxFile {
 
   /// Get a preview for a file.
   ///
+  /// NOTE: Get a preview for a file. Currently, PDF previews are generated for
+  /// files with the following extensions: .ai, .doc, .docm, .docx, .eps, .gdoc,
+  /// .gslides, .odp, .odt, .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. HTML
+  /// previews are generated for files with the following extensions: .csv, .ods,
+  /// .xls, .xlsm, .gsheet, .xlsx. Other formats will return an unsupported
+  /// extension error.
+  ///
   /// This function uses the Dropbox API endpoint for getting a file preview:
   /// `https://content.dropboxapi.com/2/files/get_preview`
   ///
   /// Parameters:
-  /// - [path]: The path of the file to preview.
-  ///
-  /// Returns a [Future] with a [Map<String, dynamic>]:
-  /// - If successful, {'type': 'success', 'metadata': response metadata}.
-  /// - If there's an error, {'type': 'error', 'error': response data}.
+  /// - `path`: The path of the file to preview.
   Future<Map<String, dynamic>> getPreview(String path) async {
     final requestData = {
       'path': path,
@@ -709,7 +721,7 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {'success': true, 'result': jsonDecode(response.body)};
+      return {'success': true, 'result': response.body};
     } else {
       return {'success': false, 'error': response.body};
     }
@@ -847,7 +859,7 @@ class DropboxFile {
     );
 
     if (response.statusCode == 200) {
-      return {'success': true, 'result': jsonDecode(response.body)};
+      return {'success': true, 'result': response.body};
     } else {
       return {'success': false, 'error': response.body};
     }
@@ -1093,13 +1105,17 @@ class DropboxFile {
   ///
   /// `path`: The path to the file.
   ///
-  /// `limit`: The maximum number of revisions to return (default is 10).
+  /// `limit`: UInt64(min=1, max=100)The maximum number of revision entries returned. The default for this field is 10.
   ///
   /// `mode`: The mode to determine whether to query by path or file id.
-  Future<Map<String, dynamic>> listRevisions(String path, {int limit = 10, String mode = 'path'}) async {
+  Future<Map<String, dynamic>> listRevisions(
+    String path, {
+    int limit = 10,
+    ListRevisionsMode mode = ListRevisionsMode.path,
+  }) async {
     final requestData = {
       'limit': limit,
-      'mode': mode,
+      'mode': mode.name,
       'path': path,
     };
 
@@ -1472,7 +1488,7 @@ class DropboxFile {
   /// `path`: The path to search within.
   Future<Map<String, dynamic>> searchFiles(
     String query, {
-    required String path,
+    String path = '',
     bool includeHighlights = false,
     bool filenameOnly = false,
     int maxResults = 10,
