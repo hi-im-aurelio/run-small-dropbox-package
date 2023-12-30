@@ -51,7 +51,7 @@ void main() async {
       expect(data['success'], true);
     });
     test('createFolder', () async {
-      var data = await dropboxFile.createFolder('/Downloads', autorename: false);
+      var data = await dropboxFile.createFolder('Downloads', autorename: true);
 
       print(data);
 
@@ -88,10 +88,12 @@ void main() async {
       expect(data['success'], true);
     });
     test('deleteFilesBatch', () async {
-      var data = await dropboxFile.deleteFilesBatch([
-        '/System32',
-        '/Desktop',
-      ]);
+      var data = await dropboxFile.deleteFilesBatch(
+        [
+          DeleteArg(path: 'Downloads (1)'),
+          DeleteArg(path: 'Downloads (2)'),
+        ],
+      );
 
       print(data);
 
@@ -144,21 +146,21 @@ void main() async {
       expect(data['success'], true);
     });
     test('getMetadata', () async {
-      var data = await dropboxFile.getMetadata('/Documents/movies.json');
+      var data = await dropboxFile.getMetadata('Desktop/movies.json');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getPreview', () async {
-      var data = await dropboxFile.getPreview('/Documents/Document.docx');
+      var data = await dropboxFile.getPreview('/Documents/mitologiagrega.docx');
 
       print(data);
 
       expect(data['success'], true);
     });
     test('getTemporaryLink', () async {
-      var data = await dropboxFile.getTemporaryLink('/Documents/movies.json');
+      var data = await dropboxFile.getTemporaryLink('/Documents/users.json');
 
       print(data);
 
@@ -249,14 +251,20 @@ void main() async {
       expect(data['success'], true);
     });
     test('moveBatchV2', () async {
-      var data = await dropboxFile.moveBatchV2([]);
+      var data = await dropboxFile.moveBatchV2(
+        [
+          RelocationPath(fromPath: '/Documents/users.json', toPath: '/Desktop/users.json'),
+          RelocationPath(fromPath: '/Documents/main.dart', toPath: '/Desktop/main.dart'),
+        ],
+      );
 
       print(data);
 
       expect(data['success'], true);
     });
     test('moveBatchCheckV2', () async {
-      var data = await dropboxFile.moveBatchCheckV2('');
+      String asyncJobId = 'dbjid:AACUbbYLC4V4a58VE3L923XCBH5myG1_qK33mhOjwS5p-7YxylZCpnhcLMlCNCmEA5oQAJMJIYQZkaLee05zMIXW';
+      var data = await dropboxFile.moveBatchCheckV2(asyncJobId);
 
       print(data);
 
@@ -385,7 +393,7 @@ void main() async {
       expect(data['success'], true);
     });
     test('uploadSessionStart', () async {
-      var data = await dropboxFile.uploadSessionStart('');
+      var data = await dropboxFile.uploadSessionStart(File(''));
 
       print(data);
 

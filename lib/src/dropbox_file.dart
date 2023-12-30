@@ -1,9 +1,32 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:run_small_dropbox/src/utils/r_path.dart';
 import 'package:universal_io/io.dart';
 import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
+
+/// DeleteArg
+///
+/// `path` - Path in the user's Dropbox to delete.
+/// `parent_rev` - Perform delete if given "rev" matches the existing file's latest "rev". This field does not support deleting a folder. This field is optional.
+class DeleteArg {
+  final String path, parentRev;
+  DeleteArg({required this.path, this.parentRev = ''});
+}
+
+/// RelocationPath
+///
+/// `rom_path` - Path in the user's Dropbox to be copied or moved.
+///
+/// `to_path` - Path in the user's Dropbox that is the destination.
+class RelocationPath {
+  final String fromPath, toPath;
+  RelocationPath({
+    required this.fromPath,
+    required this.toPath,
+  });
+}
 
 /// ListRevisionsMode (open union)
 ///
@@ -168,8 +191,8 @@ class DropboxFile {
     };
 
     final body = {
-      'from_path': fromPath,
-      'to_path': toPath,
+      'from_path': rPath(fromPath),
+      'to_path': rPath(toPath),
       'allow_ownership_transfer': allowOwnershipTransfer,
       'allow_shared_folder': allowSharedFolder,
       'autorename': autorename,
@@ -207,6 +230,12 @@ class DropboxFile {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
+
+    // Format paths using rPath
+    for (var entry in entries) {
+      entry['from_path'] = rPath(entry['from_path']!);
+      entry['to_path'] = rPath(entry['to_path']!);
+    }
 
     final body = {
       'autorename': autorename,
@@ -282,7 +311,7 @@ class DropboxFile {
     };
 
     final body = {
-      'path': filePath,
+      'path': rPath(filePath),
     };
 
     final response = await http.post(
@@ -319,7 +348,7 @@ class DropboxFile {
 
     final body = {
       'copy_reference': copyReference,
-      'path': destinationPath,
+      'path': rPath(destinationPath),
     };
 
     final response = await http.post(
@@ -354,7 +383,7 @@ class DropboxFile {
     };
 
     final body = {
-      'path': folderPath,
+      'path': rPath(folderPath),
       'autorename': autorename,
     };
 
@@ -391,6 +420,9 @@ class DropboxFile {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
+
+    // Format paths using rPath
+    folderPaths = folderPaths.map(rPath).toList();
 
     final body = {
       'paths': folderPaths,
@@ -493,13 +525,19 @@ class DropboxFile {
   /// - If the delete operation is complete, {'status': 'complete', 'entries': response entries}.
   /// - If the delete operation is asynchronous, {'status': 'async', 'async_job_id': response async job id}.
   /// - If there's an error or another status, {'status': 'other', 'error': response data}.
-  Future<Map<String, dynamic>> deleteFilesBatch(List<String> paths) async {
+  Future<Map<String, dynamic>> deleteFilesBatch(List<DeleteArg> paths) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
-    final entries = paths.map((path) => {"path": path}).toList();
+    final entries = paths.map((path) {
+      return {
+        "path": rPath(path.path),
+        if (path.parentRev.isNotEmpty) "parent_rev": path.parentRev,
+      };
+    }).toList();
+
     final body = {"entries": entries};
 
     final response = await http.post(
@@ -562,7 +600,7 @@ class DropboxFile {
   Future<Map<String, dynamic>> downloadFile(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
-      'Dropbox-API-Arg': '{"path":"$path"}',
+      'Dropbox-API-Arg': '{"path":"${rPath(path)}"}',
     };
 
     final response = await http.post(
@@ -591,7 +629,7 @@ class DropboxFile {
   Future<Map<String, dynamic>> downloadFolderAsZip(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
-      'Dropbox-API-Arg': '{"path":"$path"}',
+      'Dropbox-API-Arg': '{"path":"${rPath(path)}"}',
     };
 
     final response = await http.post(
@@ -621,7 +659,7 @@ class DropboxFile {
   Future<Map<String, dynamic>> exportFile(String path, {String? exportFormat}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
-      'Dropbox-API-Arg': '{"path":"$path"}',
+      'Dropbox-API-Arg': '{"path":"${rPath(path)}"}',
     };
 
     if (exportFormat != null) {
@@ -653,7 +691,7 @@ class DropboxFile {
   /// - For each entry in the batch, {'status': 'error', 'error': entry error} on error.
   ///
   Future<Map<String, dynamic>> getFileLockBatch(List<String> paths) async {
-    final entries = paths.map((path) => {'path': path}).toList();
+    final entries = paths.map((path) => {'path': rPath(path)}).toList();
     final requestData = {'entries': entries};
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -696,7 +734,7 @@ class DropboxFile {
       'include_deleted': includeDeleted,
       'include_has_explicit_shared_members': includeHasExplicitSharedMembers,
       'include_media_info': includeMediaInfo,
-      'path': path,
+      'path': rPath(path),
     };
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -732,7 +770,7 @@ class DropboxFile {
   /// - `path`: The path of the file to preview.
   Future<Map<String, dynamic>> getPreview(String path) async {
     final requestData = {
-      'path': path,
+      'path': rPath(path),
     };
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -764,7 +802,7 @@ class DropboxFile {
   /// - If there's an error, {'type': 'error', 'error': response data}.
   Future<Map<String, dynamic>> getTemporaryLink(String path) async {
     final requestData = {
-      'path': path,
+      'path': rPath(path),
     };
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -811,7 +849,7 @@ class DropboxFile {
       'autorename': autorename,
       'mode': mode.name,
       'mute': mute,
-      'path': path,
+      'path': rPath(path),
       'strict_conflict': strictConflict,
     };
 
@@ -867,7 +905,7 @@ class DropboxFile {
       'quality': quality.name,
       'resource': {
         '.tag': pathOrLink.name,
-        'path': path,
+        'path': rPath(path),
       },
       'size': size.name,
     };
@@ -917,7 +955,7 @@ class DropboxFile {
         'mode': mode.name,
         'quality': quality.name,
         'size': size.name,
-        'path': path,
+        'path': rPath(path),
       };
     }).toList();
 
@@ -974,7 +1012,7 @@ class DropboxFile {
     int limit = 100,
   }) async {
     final requestData = {
-      'path': path,
+      'path': rPath(path),
       'include_deleted': includeDeleted,
       'include_has_explicit_shared_members': includeHasExplicitSharedMembers,
       'include_media_info': includeMediaInfo,
@@ -1056,7 +1094,7 @@ class DropboxFile {
       'include_media_info': false,
       'include_mounted_folders': true,
       'include_non_downloadable_files': true,
-      'path': path,
+      'path': rPath(path),
       'recursive': false,
     };
 
@@ -1140,7 +1178,7 @@ class DropboxFile {
     final requestData = {
       'limit': limit,
       'mode': mode.name,
-      'path': path,
+      'path': rPath(path),
     };
 
     final headers = {
@@ -1171,7 +1209,7 @@ class DropboxFile {
   /// `filePaths`: List of file paths to lock.
   Future<Map<String, dynamic>> lockFileBatch(List<String> filePaths) async {
     final requestData = {
-      'entries': filePaths.map((path) => {'path': path}).toList(),
+      'entries': filePaths.map((path) => {'path': rPath(path)}).toList(),
     };
 
     final headers = {
@@ -1214,8 +1252,8 @@ class DropboxFile {
       'allow_ownership_transfer': allowOwnershipTransfer,
       'allow_shared_folder': allowSharedFolder, // Deprecated, has no effect
       'autorename': autorename,
-      'from_path': fromPath,
-      'to_path': toPath,
+      'from_path': rPath(fromPath),
+      'to_path': rPath(toPath),
     };
 
     final headers = {
@@ -1253,11 +1291,16 @@ class DropboxFile {
   /// `autorename`: If there's a conflict with any file, have the Dropbox server
   /// try to autorename that file to avoid the conflict. The default for this
   /// field is False.
-  Future<Map<String, dynamic>> moveBatchV2(List<Map<String, String>> entries, {bool allowOwnershipTransfer = false, bool autorename = false}) async {
+  Future<Map<String, dynamic>> moveBatchV2(List<RelocationPath> entries, {bool allowOwnershipTransfer = false, bool autorename = false}) async {
     final requestData = {
       'allow_ownership_transfer': allowOwnershipTransfer,
       'autorename': autorename,
-      'entries': entries,
+      'entries': entries
+          .map((entry) => {
+                'from_path': entry.fromPath,
+                'to_path': entry.toPath,
+              })
+          .toList(),
     };
 
     final headers = {
@@ -1321,7 +1364,7 @@ class DropboxFile {
   }) async {
     final requestData = {
       'import_format': importFormat.name,
-      'path': path,
+      'path': rPath(path),
     };
 
     final headers = {
@@ -1367,7 +1410,7 @@ class DropboxFile {
       'doc_update_policy': docUpdatePolicy.name,
       'import_format': importFormat.name,
       'paper_revision': paperRevision,
-      'path': path,
+      'path': rPath(path),
     };
 
     final headers = {
@@ -1397,7 +1440,7 @@ class DropboxFile {
   /// latest "rev". This field does not support deleting a folder. This field is optional.
   Future<Map<String, dynamic>> permanentlyDelete(String path, {String? parentRev}) async {
     final requestData = {
-      'path': path,
+      'path': rPath(path),
       'parent_rev': parentRev,
     };
 
@@ -1426,7 +1469,7 @@ class DropboxFile {
   ///
   Future<Map<String, dynamic>> restoreFile(String path, String rev) async {
     final requestData = {
-      'path': path,
+      'path': rPath(path),
       'rev': rev,
     };
 
@@ -1457,7 +1500,7 @@ class DropboxFile {
   ///
   Future<Map<String, dynamic>> saveUrl(String path, String url) async {
     final requestData = {
-      'path': path,
+      'path': rPath(path),
       'url': url,
     };
 
@@ -1524,7 +1567,7 @@ class DropboxFile {
         'file_status': fileStatus.name,
         'filename_only': filenameOnly,
         'max_results': maxResults,
-        'path': path,
+        'path': rPath(path),
       },
       'match_field_options': {
         'include_highlights': includeHighlights,
@@ -1580,7 +1623,7 @@ class DropboxFile {
   /// `tagText`: The tag text to add.
   Future<Map<String, dynamic>> addTag(String filePath, String tagText) async {
     final requestData = {
-      'path': filePath,
+      'path': rPath(filePath),
       'tag_text': tagText,
     };
 
@@ -1605,6 +1648,7 @@ class DropboxFile {
   ///
   /// `filePaths`: List of file paths to get tags for.
   Future<Map<String, dynamic>> getTags(List<String> filePaths) async {
+    filePaths = filePaths.map((path) => rPath(path)).toList();
     final requestData = {
       'paths': filePaths,
     };
@@ -1634,7 +1678,7 @@ class DropboxFile {
   ///
   Future<Map<String, dynamic>> removeTag(String filePath, String tagText) async {
     final requestData = {
-      'path': filePath,
+      'path': rPath(filePath),
       'tag_text': tagText,
     };
 
@@ -1666,7 +1710,7 @@ class DropboxFile {
   /// `filePaths`: List of file paths to unlock.
   Future<Map<String, dynamic>> unlockFileBatch(List<String> filePaths) async {
     final requestData = {
-      'entries': filePaths.map((path) => {'path': path}).toList(),
+      'entries': filePaths.map((path) => {'path': rPath(path)}).toList(),
     };
 
     final headers = {
@@ -1719,7 +1763,7 @@ class DropboxFile {
         "autorename": autorename,
         "mode": mode.name,
         "mute": mute,
-        "path": destinationPath,
+        "path": rPath(destinationPath),
         "strict_conflict": strictConflict,
       }),
     };
@@ -1816,7 +1860,7 @@ class DropboxFile {
           'autorename': autorename,
           'mode': mode.name,
           'mute': mute,
-          'path': path,
+          'path': rPath(path),
           'strict_conflict': strictConflict,
         },
         'cursor': {
@@ -1855,6 +1899,15 @@ class DropboxFile {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
+
+    entries = entries
+        .map((entry) => {
+              'session_id': entry['session_id'],
+              'offset': entry['offset'],
+              'path': rPath(entry['path']),
+              'close': entry['close'],
+            })
+        .toList();
 
     final Map<String, dynamic> requestData = {'entries': entries};
     final String requestBody = jsonEncode(requestData);
@@ -1924,7 +1977,7 @@ class DropboxFile {
   /// with UploadSessionStartArg.close set to true, that may contain any remaining data).
   ///
   /// `localFilePath`: The local file path to upload.
-  Future<Map<String, dynamic>> uploadSessionStart(String localFilePath, {bool close = false}) async {
+  Future<Map<String, dynamic>> uploadSessionStart(File file, {bool close = false}) async {
     final Uri uri = Uri.parse('https://content.dropboxapi.com/2/files/upload_session/start');
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
@@ -1932,7 +1985,6 @@ class DropboxFile {
       'Dropbox-API-Arg': '{"close": $close}',
     };
 
-    final File file = File(localFilePath);
     final List<int> fileContent = await file.readAsBytes();
 
     final http.Response response = await http.post(
