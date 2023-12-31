@@ -24,7 +24,7 @@ class Dropbox {
   /// Initializes a Dropbox app.
   ///
   /// Returns a [Future] with a [DropboxApp] instance.
-  static app.DropboxApp initializeApp() {
-    return app.DropboxApp();
+  static app.DropboxApp initializeApp(String accessToken) {
+    return app.DropboxApp(accessToken);
   }
 }

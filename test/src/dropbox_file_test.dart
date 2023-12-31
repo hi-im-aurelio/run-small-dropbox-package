@@ -5,8 +5,8 @@ import 'dart:convert';
 
 // ignore: invalid_annotation_target
 @Timeout(Duration(seconds: 45))
-void main() async {
-  DropboxApp app = await Dropbox.initializeApp();
+void main() {
+  final app = Dropbox.initializeApp('sl.BsxFREb8TOiRT4DaUGxgn8IFADgq7Wb4TFlis0r41OI-yvM7qQpCFKSgPm5za_rpZJh-9jnIoVOVFlual0BLMcsIXB63bFJaz3kW0bb5lh1SEJgJQMUhU0MgMKmaP58Cyj35BI77kMcZJdCMnrS76QQ');
   DropboxFile dropboxFile = DropboxFile(app);
 
   group('DropxboxFile Module', () {
