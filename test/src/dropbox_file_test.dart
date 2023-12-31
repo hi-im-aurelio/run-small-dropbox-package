@@ -6,7 +6,8 @@ import 'dart:convert';
 // ignore: invalid_annotation_target
 @Timeout(Duration(seconds: 45))
 void main() {
-  final app = Dropbox.initializeApp('sl.BsxFREb8TOiRT4DaUGxgn8IFADgq7Wb4TFlis0r41OI-yvM7qQpCFKSgPm5za_rpZJh-9jnIoVOVFlual0BLMcsIXB63bFJaz3kW0bb5lh1SEJgJQMUhU0MgMKmaP58Cyj35BI77kMcZJdCMnrS76QQ');
+  const t = 'sl.BswpEkg3RFvb0K0SQ1i-dVtEW-3FuIw2qMAEVpHmfFgZehSU5y9vrr1cd9z-VrmTOVOgNzZGMPb6vLdslCBmU6S1YsziAcITL4kSfbmqJl4xuG0te06lnt8w0mwTjuCgSrGcNCxk2DgjL-tQWrS7l4s';
+  final app = Dropbox.initializeApp(t);
   DropboxFile dropboxFile = DropboxFile(app);
 
   group('DropxboxFile Module', () {
@@ -160,7 +161,7 @@ void main() {
       expect(data['success'], true);
     });
     test('getTemporaryLink', () async {
-      var data = await dropboxFile.getTemporaryLink('/Documents/users.json');
+      var data = await dropboxFile.getTemporaryLink('/Documents/drop_up.txt');
 
       print(data);
 
