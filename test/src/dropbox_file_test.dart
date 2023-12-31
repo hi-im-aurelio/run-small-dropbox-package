@@ -1,3 +1,4 @@
+import 'package:run_small_dropbox/src/dropbox_app.dart';
 import 'package:test/test.dart';
 import 'package:run_small_dropbox/run_small_dropbox.dart';
 import 'package:universal_io/io.dart';
@@ -7,7 +8,7 @@ import 'dart:convert';
 @Timeout(Duration(seconds: 45))
 void main() {
   const t = 'sl.BswpEkg3RFvb0K0SQ1i-dVtEW-3FuIw2qMAEVpHmfFgZehSU5y9vrr1cd9z-VrmTOVOgNzZGMPb6vLdslCBmU6S1YsziAcITL4kSfbmqJl4xuG0te06lnt8w0mwTjuCgSrGcNCxk2DgjL-tQWrS7l4s';
-  final app = Dropbox.initializeApp(t);
+  DropboxApp app = Dropbox.initializeApp(t);
   DropboxFile dropboxFile = DropboxFile(app);
 
   group('DropxboxFile Module', () {

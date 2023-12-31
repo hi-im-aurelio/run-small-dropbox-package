@@ -1,7 +1,7 @@
-class DropboxApp {
+class _DropboxApp {
   final String _accessToken;
 
-  DropboxApp(String t) : _accessToken = t;
+  _DropboxApp(String t) : _accessToken = t;
 
   String get accessToken => _accessToken;
 }

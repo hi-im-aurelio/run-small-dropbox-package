@@ -19,6 +19,8 @@
 /// print('Formatted Path: $path');
 /// ```
 String rPath(String path) {
+  if (path.isEmpty) return path;
+
   if (!path.startsWith('/')) path = '/$path';
 
   return path;
