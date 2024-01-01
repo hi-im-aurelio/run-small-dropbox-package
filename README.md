@@ -1,4 +1,4 @@
-<img height="302px" width="302px" src="./git_assets/run-small-dropbox_icone.png"></img>
+<img height="302px" width="302px" src="https://github.com/fariosofernando/run-small-dropbox-package/blob/master/git_assets/run-small-dropbox_icone.png"></img>
 
 # Run Small Dropbox Package
 
