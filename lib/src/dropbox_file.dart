@@ -1307,13 +1307,13 @@ class DropboxFile {
   ///
   /// `autorename`: If there's a conflict, have the Dropbox server try to
   /// autorename the file to avoid the conflict. The default for this field is False.
-  Future<Map<String, dynamic>> moveV2(String fromPath, String toPath, {bool allowOwnershipTransfer = false, bool allowSharedFolder = false, bool autorename = false}) async {
+  Future<Map<String, dynamic>> moveV2(RelocationPath relocationPath, {bool allowOwnershipTransfer = false, bool allowSharedFolder = false, bool autorename = false}) async {
     final requestData = {
       'allow_ownership_transfer': allowOwnershipTransfer,
       'allow_shared_folder': allowSharedFolder, // Deprecated, has no effect
       'autorename': autorename,
-      'from_path': rPath(fromPath),
-      'to_path': rPath(toPath),
+      'from_path': rPath(relocationPath.fromPath),
+      'to_path': rPath(relocationPath.toPath),
     };
 
     final headers = {

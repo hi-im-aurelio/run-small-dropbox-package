@@ -244,10 +244,7 @@ void main() {
       expect(data['success'], false);
     });
     test('moveV2', () async {
-      var data = await dropboxFile.moveV2(
-        '/Documents/movies.json',
-        '/Desktop/movies.json',
-      );
+      var data = await dropboxFile.moveV2(RelocationPath(fromPath: '/Documents/users.json', toPath: '/Desktop/users.json'));
 
       print(data);
 
