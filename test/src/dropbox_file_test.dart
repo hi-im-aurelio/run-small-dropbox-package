@@ -7,7 +7,7 @@ import 'dart:convert';
 // ignore: invalid_annotation_target
 @Timeout(Duration(seconds: 45))
 void main() {
-  const t = 'sl.Bs3liqBghhyI0t0iIEz9PZm8lcVQKxipxkoC-TEr5JMqJs6EItOAflg2npZWRm99bx9eZKSPISC7pzwb7tWumYQc3kJQlPlW4v8UeGxJYSEXfIPYgfm58xDcZwYt868hW3TgC6J3biVX3p5Z7lwRFFg';
+  const t = 'YOU_ACCESS_TOKEN';
   DropboxApp app = Dropbox.initializeApp(t);
   DropboxFile dropboxFile = DropboxFile(app);
 

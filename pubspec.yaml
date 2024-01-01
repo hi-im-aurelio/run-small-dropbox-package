@@ -1,11 +1,11 @@
 name: run_small_dropbox
 description: Access to the dropbox API in a simple and fast way, shortening several steps of the complex implementation of the official dropbox api. Supported for all platforms.
-version: 2.0.2
+version: 3.0.0
 homepage: https://github.com/fariosofernando/run-small-dropbox-package
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: '>=2.19.1 <3.0.0'
+  sdk: '>=2.19.1'
 
 dependencies:
   http: ^0.13.5
