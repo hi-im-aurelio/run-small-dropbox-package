@@ -10,8 +10,8 @@ environment:
 dependencies:
   run_small_dropbox:
     path: ../
+  test: ^1.25.0
   universal_io: ^2.2.0
 
 dev_dependencies:
   lints: ^2.0.0
-  test: ^1.21.0
