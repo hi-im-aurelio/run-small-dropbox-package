@@ -787,7 +787,6 @@ We hope this SDK makes your interactions with the Dropbox API easier when develo
 
 If you have any questions, suggestions or encounter any problems, feel free to get in touch.
 
-You can visit the repository on GitHub to learn more about it. Happy coding!
-GitHub: https://github.com/fariosofernando/run-small-dropbox-package
+You can visit the repository on [Github](https://github.com/fariosofernando/run-small-dropbox-package) to learn more about it. Happy coding!
 
 Hey! Run, run! Small Dropbox!
