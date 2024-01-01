@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+/// UploadSessionStartArg
+///
+/// Commit information for each file in the batch.
 class UploadSessionFinishArg {
   final UploadSessionCursor cursor;
   final CommitInfo commit;
@@ -13,6 +16,9 @@ class UploadSessionFinishArg {
   UploadSessionFinishArg({required this.cursor, required this.commit});
 }
 
+/// UploadSessionCursor
+///
+/// Contains the upload session ID and the offset.
 class UploadSessionCursor {
   final String sessionId;
   final int offset;
@@ -20,6 +26,9 @@ class UploadSessionCursor {
   UploadSessionCursor({required this.sessionId, required this.offset});
 }
 
+/// CommitInfo
+///
+/// Contains the path and other optional modifiers for the commit.
 class CommitInfo {
   final String path;
   final WriteMode mode;
@@ -42,6 +51,9 @@ class CommitInfo {
   });
 }
 
+/// PropertyGroup
+///
+/// Custom properties to add to file
 class PropertyGroup {
   final String templateId;
   final List<PropertyField> fields;
@@ -49,6 +61,9 @@ class PropertyGroup {
   PropertyGroup({required this.templateId, required this.fields});
 }
 
+/// PropertyField
+///
+/// The actual properties associated with the template. There can be up to 32 property types per template.
 class PropertyField {
   final String name;
   final String value;
