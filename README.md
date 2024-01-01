@@ -40,7 +40,7 @@ You need to get a DropboxApp instance to be able to use Dropbox modules, you can
 
 ```dart
 
-DropboxApp app = Dropbox.initializeApp('YOUR-ACCESS-TOKEN');
+final app = Dropbox.initializeApp('YOUR-ACCESS-TOKEN');
 
 ```
 
