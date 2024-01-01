@@ -7,24 +7,25 @@ import 'dart:convert';
 // ignore: invalid_annotation_target
 @Timeout(Duration(seconds: 45))
 void main() {
-  const t = 'sl.BswpEkg3RFvb0K0SQ1i-dVtEW-3FuIw2qMAEVpHmfFgZehSU5y9vrr1cd9z-VrmTOVOgNzZGMPb6vLdslCBmU6S1YsziAcITL4kSfbmqJl4xuG0te06lnt8w0mwTjuCgSrGcNCxk2DgjL-tQWrS7l4s';
+  const t = 'sl.Bs3liqBghhyI0t0iIEz9PZm8lcVQKxipxkoC-TEr5JMqJs6EItOAflg2npZWRm99bx9eZKSPISC7pzwb7tWumYQc3kJQlPlW4v8UeGxJYSEXfIPYgfm58xDcZwYt868hW3TgC6J3biVX3p5Z7lwRFFg';
   DropboxApp app = Dropbox.initializeApp(t);
   DropboxFile dropboxFile = DropboxFile(app);
 
   group('DropxboxFile Module', () {
     test('copyFile', () async {
-      var data = await dropboxFile.copyFile(fromPath: '/Documents/movies.json', toPath: '/Documents/movies/movies_copy.json');
+      var data = await dropboxFile.copyFile(relocationPath: RelocationPath(fromPath: '/Documents/favicon2_.png', toPath: '/Desktop/favicon2_.png'));
 
       print(data);
 
       expect(data['success'], true);
     });
     test('copyBatch', () async {
-      var data = await dropboxFile.copyBatch(entries: [
-        {'from_path': '/Documents/movies.json', 'to_path': '/Documents/movies/movies_copy2.json'},
-        {'from_path': '/Documents/movies.json', 'to_path': '/Documents/movies/movies_copy3.json'},
-        {'from_path': '/Documents/movies.json', 'to_path': '/Documents/movies/movies_copy4.json'},
-      ]);
+      List<RelocationPath> entries = [
+        RelocationPath(fromPath: '/Documents/drop_up.txt', toPath: '/Desktop/drop_up.txt'),
+        RelocationPath(fromPath: '/Documents/uploadtestfile.txt', toPath: '/Desktop/uploadtestfile.txt'),
+      ];
+
+      var data = await dropboxFile.copyBatch(entries: entries);
 
       print(data);
 

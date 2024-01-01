@@ -244,8 +244,7 @@ class DropboxFile {
   /// - If there's an error, {'success': false, 'error': response body}.
   ///
   Future<Map<String, dynamic>> copyFile({
-    required String fromPath,
-    required String toPath,
+    required RelocationPath relocationPath,
     bool allowOwnershipTransfer = false,
     bool allowSharedFolder = false,
     bool autorename = false,
@@ -256,8 +255,8 @@ class DropboxFile {
     };
 
     final body = {
-      'from_path': rPath(fromPath),
-      'to_path': rPath(toPath),
+      'from_path': rPath(relocationPath.fromPath),
+      'to_path': rPath(relocationPath.toPath),
       'allow_ownership_transfer': allowOwnershipTransfer,
       'allow_shared_folder': allowSharedFolder,
       'autorename': autorename,
@@ -287,30 +286,26 @@ class DropboxFile {
   ///
   /// Note: This route will either finish synchronously or return a job ID to perform the copy job asynchronously in the background.
   /// Please use `copyBatchCheck` to check the job status.
-  Future<Map<String, dynamic>> copyBatch({
-    required List<Map<String, String>> entries,
-    bool autorename = false,
-  }) async {
+  Future<Map<String, dynamic>> copyBatch({required List<RelocationPath> entries, bool autorename = false}) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
-    // Format paths using rPath
-    for (var entry in entries) {
-      entry['from_path'] = rPath(entry['from_path']!);
-      entry['to_path'] = rPath(entry['to_path']!);
-    }
-
-    final body = {
+    final requestData = {
       'autorename': autorename,
-      'entries': entries,
+      'entries': entries
+          .map((entry) => {
+                'from_path': entry.fromPath,
+                'to_path': entry.toPath,
+              })
+          .toList(),
     };
 
     final response = await http.post(
       Uri.parse('https://api.dropboxapi.com/2/files/copy_batch_v2'),
       headers: headers,
-      body: jsonEncode(body),
+      body: jsonEncode(requestData),
     );
 
     if (response.statusCode == 200) {
