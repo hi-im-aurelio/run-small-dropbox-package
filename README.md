@@ -1,24 +1,24 @@
 <img height="302px" width="302px" src="./git_assets/run-small-dropbox_icone.png"></img>
 
-<h1>Run Small Dropbox Package</h1>
+# Run Small Dropbox Package
 
-<p>A Dart SDK that simplifies interaction with the Dropbox API.</p>
-<p>This SDK provides convenient abstractions and methods for common operations when working with Dropbox, such as copying files, creating folders, downloading files, and more.</p>
+A Dart SDK that simplifies interaction with the Dropbox API.
+This SDK provides convenient abstractions and methods for common operations when working with Dropbox, such as copying files, creating folders, downloading files, and more.
 
-<p>The goal is to accelerate the integration of Dropbox functionality into the Dart and Flutter apps.</p>
+The goal is to accelerate the integration of Dropbox functionality into the Dart and Flutter apps.
 
-<p>The SDK is designed to be easy to use and follows a similar structure to other popular SDKs like Firebase, making it easy for familiar developers to seamlessly integrate Dropbox functionality into their apps.</p>
+The SDK is designed to be easy to use and follows a similar structure to other popular SDKs like Firebase, making it easy for familiar developers to seamlessly integrate Dropbox functionality into their apps.
 
-<h2>Getting Started</h2>
+## Getting Started
 
 To use this package, add run_small_dropbox as a dependency in your pubspec.yaml file. For example:
 
 ```yaml
 dependencies:
-  run_small_dropbox: ^1.0.0
+  run_small_dropbox: ^3.0.0
 ```
 
-<h2>Features</h2>
+## Features
 
 - File Operations: Copy, move, delete, and manage files and folders.
 
@@ -34,9 +34,25 @@ dependencies:
 
 - Paper Operations: Create and update Paper documents.
 
-<h2>Usage</h2>
+## Usage
 
-Você precisa obter a instancia do DropboxApp, e para isso você pode fazer assim:
+You need to get a DropboxApp instance to be able to use Dropbox modules, you can do it like this:
+
+```dart
+
+DropboxApp app = Dropbox.initializeApp('YOUR-ACCESS-TOKEN');
+
+```
+
+> NOTE: "Modules" are parts of the SDK that you can access separately.
+> They would basically be what Firebase Storage, Firebase Core, and
+> Firebase Authentication are to the Firebase SDK.
+
+So far we only have a single “Module”, DropboxFile.
+
+All “Modules” depend on a DropboxApp object to function.
+
+> I won't put comments over the examples, you can use your IDE to get an idea of what each method does. All methods have rich documentation.
 
 ### Copy File
 
@@ -50,6 +66,21 @@ Feature<void> method() async {
 }
 
 ```
+
+In the examples, you will probably notice that in some cases, the beginning of folders begins with a forward slash "/". What happens is that the Dropbox API returns an exception if it doesn't find this bar at the beginning. But Run Small Dropbox gives you the freedom to add it or not, thanks to `rPath`:
+
+```dart
+void main(){
+    String path1 = rPath('/MyPathInDropbox'); // With the forward slash "/"
+    String path2 = rPath('MyPathInDropbox'); // Without the slash "/".
+
+    print("output 1: $path1"); // >>> output 1: /MyPathInDropbox
+    print("output 2: $path2"); // >>> output 2: /MyPathInDropbox
+}
+```
+
+> rPath is an internal function of Run Small Dropbox, you do not need to import it or define it explicitly. When using a method with requires a `path`, you can choose to pass or not pass without the "/" slash.
+> `dropboxFile.copyFile(FolderWithoutSlash/file.txt);`
 
 ### Copy File Batch
 
