@@ -6,6 +6,56 @@ import 'package:http/http.dart' as http;
 
 import 'dropbox_app.dart';
 
+class UploadSessionFinishArg {
+  final UploadSessionCursor cursor;
+  final CommitInfo commit;
+
+  UploadSessionFinishArg({required this.cursor, required this.commit});
+}
+
+class UploadSessionCursor {
+  final String sessionId;
+  final int offset;
+
+  UploadSessionCursor({required this.sessionId, required this.offset});
+}
+
+class CommitInfo {
+  final String path;
+  final WriteMode mode;
+  final bool autorename;
+  final DateTime? clientModified;
+  final bool mute;
+  final List<PropertyGroup>? propertyGroups;
+  final bool strictConflict;
+  final String? contentHash;
+
+  CommitInfo({
+    required this.path,
+    required this.mode,
+    required this.autorename,
+    required this.clientModified,
+    required this.mute,
+    required this.propertyGroups,
+    required this.strictConflict,
+    required this.contentHash,
+  });
+}
+
+class PropertyGroup {
+  final String templateId;
+  final List<PropertyField> fields;
+
+  PropertyGroup({required this.templateId, required this.fields});
+}
+
+class PropertyField {
+  final String name;
+  final String value;
+
+  PropertyField({required this.name, required this.value});
+}
+
 /// DeleteArg
 ///
 /// `path` - Path in the user's Dropbox to delete.
@@ -1893,23 +1943,41 @@ class DropboxFile {
   /// For more information, see the Data transport limit page.
   ///
   /// `entries`: List of entries containing the session ID, offset, and path. 'error'.
-  Future<Map<String, dynamic>> uploadSessionFinishBatch(List<Map<String, dynamic>> entries) async {
+  Future<Map<String, dynamic>> uploadSessionFinishBatch(List<UploadSessionFinishArg> entries) async {
     final Uri uri = Uri.parse('https://api.dropboxapi.com/2/files/upload_session/finish_batch_v2');
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-Type': 'application/json',
     };
 
-    entries = entries
-        .map((entry) => {
-              'session_id': entry['session_id'],
-              'offset': entry['offset'],
-              'path': rPath(entry['path']),
-              'close': entry['close'],
-            })
-        .toList();
+    Map<String, dynamic> convertPropertyFieldToMap(PropertyField field) => {'name': field.name, 'value': field.value};
 
-    final Map<String, dynamic> requestData = {'entries': entries};
+    Map<String, dynamic> convertPropertyGroupToMap(PropertyGroup group) => {
+          'template_id': group.templateId,
+          'fields': group.fields.map((field) => convertPropertyFieldToMap(field)).toList(),
+        };
+
+    List<Map<String, dynamic>> convertedEntries = entries.map((entry) {
+      Map<String, dynamic> cursorData = {
+        'session_id': entry.cursor.sessionId,
+        'offset': entry.cursor.offset,
+      };
+
+      Map<String, dynamic> commitData = {
+        'path': rPath(entry.commit.path),
+        'mode': entry.commit.mode.name,
+        'autorename': entry.commit.autorename,
+        'client_modified': entry.commit.clientModified?.toUtc().toIso8601String(),
+        'mute': entry.commit.mute,
+        'property_groups': entry.commit.propertyGroups?.map((group) => convertPropertyGroupToMap(group)).toList(),
+        'strict_conflict': entry.commit.strictConflict,
+        'content_hash': entry.commit.contentHash,
+      };
+
+      return {'cursor': cursorData, 'commit': commitData};
+    }).toList();
+
+    final Map<String, dynamic> requestData = {'entries': convertedEntries};
     final String requestBody = jsonEncode(requestData);
 
     final http.Response response = await http.post(

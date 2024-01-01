@@ -381,7 +381,27 @@ void main() {
       expect(data['success'], true);
     });
     test('uploadSessionFinishBatch', () async {
-      var data = await dropboxFile.uploadSessionFinishBatch([]);
+      List<UploadSessionFinishArg> entries = [
+        UploadSessionFinishArg(
+          cursor: UploadSessionCursor(sessionId: '', offset: 0),
+          commit: CommitInfo(
+            path: '/Homework/math/Matrices.txt',
+            mode: WriteMode.add,
+            autorename: true,
+            clientModified: DateTime.now(),
+            mute: false,
+            propertyGroups: [
+              PropertyGroup(templateId: '', fields: [
+                PropertyField(name: 'name', value: 'Bob'),
+              ]),
+            ],
+            strictConflict: false,
+            contentHash: 'contentHash123',
+          ),
+        ),
+      ];
+
+      var data = await dropboxFile.uploadSessionFinishBatch(entries);
 
       print(data);
 
