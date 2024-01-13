@@ -1,3 +1,15 @@
+## 3.1.0
+
+- Added support for non-ASCII characters, ensuring improved compatibility with a wider range of character sets.
+
+  Enhanced functionality to handle diverse character encodings seamlessly.
+
+  Improved integration with the Dropbox API for more robust interactions.
+
+  Bug fixes and optimizations to ensure stability and performance.
+
+  Updated documentation to provide clearer guidance and ease of use.
+
 ## 3.0.2
 
 - Enhanced functionality with the addition of new features and improvements.

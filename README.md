@@ -9,6 +9,19 @@ The goal is to accelerate the integration of Dropbox functionality into the Dart
 
 The SDK is designed to be easy to use and follows a similar structure to other popular SDKs like Firebase, making it easy for familiar developers to seamlessly integrate Dropbox functionality into their apps.
 
+## Update (3.1.0)
+
+In some cases, you may have file or folder names with non-ASCII characters. The `escapeNonAscii` (released in version 3.1.0) function was designed to handle situations where you may encounter file or folder names containing non-ASCII characters when interacting with the Dropbox API. The Dropbox API requires these characters to be handled appropriately to ensure smooth communication.
+
+```dart
+void main() {
+  var escapedString = escapeNonAscii('Café');
+  print('Escaped String: $escapedString'); // >>> Escaped String: Caf\u00e9
+}
+```
+
+> escapeNonAscii is a built-in function of Run Small Dropbox, you don't need to import or define it explicitly.
+
 ## Getting Started
 
 To use this package, add run_small_dropbox as a dependency in your pubspec.yaml file. For example:
