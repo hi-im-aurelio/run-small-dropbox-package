@@ -7,7 +7,7 @@ import 'dart:convert';
 // ignore: invalid_annotation_target
 @Timeout(Duration(seconds: 45))
 void main() {
-  const t = 'YOU_ACCESS_TOKEN';
+  const t = 'sl.BtkhMi4I4OnBGts3EXGXXIZ-MiiFNF_k21Va0PidggLnrtx5_Z8XXnHbo2m2ffHX3HkT55hKrZLER0hKJsma130b-mh5ExiEW2h7yQrnnop_u7H68Rd-_XJE0J0whLE62pVx-rYNJY4KkTY4F2oaPpY';
   DropboxApp app = Dropbox.initializeApp(t);
   DropboxFile dropboxFile = DropboxFile(app);
 
@@ -149,7 +149,7 @@ void main() {
       expect(data['success'], true);
     });
     test('getMetadata', () async {
-      var data = await dropboxFile.getMetadata('Desktop/movies.json');
+      var data = await dropboxFile.getMetadata('Documents/NãoAmanhãDêOntem.txt');
 
       print(data);
 
@@ -358,7 +358,10 @@ void main() {
       expect(data['success'], true);
     });
     test('uploadFile', () async {
-      var data = await dropboxFile.uploadFile(File('C:/Users/Farioso/Desktop/dev_ttmp/main.dart'), destinationPath: '/Documents/main.dart');
+      var data = await dropboxFile.uploadFile(
+        File('C:/Users/Farioso/Desktop/NãoAmanhãDêOntem.txt'),
+        destinationPath: '/Documents/NãoAmanhãDêOntem.txt',
+      );
 
       print(data);
 

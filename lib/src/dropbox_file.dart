@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:run_small_dropbox/src/utils/escape_non_ascii_characters.dart';
 import 'package:run_small_dropbox/src/utils/r_path.dart';
 import 'package:universal_io/io.dart';
 import 'package:http/http.dart' as http;
@@ -660,7 +661,7 @@ class DropboxFile {
   Future<Map<String, dynamic>> downloadFile(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
-      'Dropbox-API-Arg': '{"path":"${rPath(path)}"}',
+      'Dropbox-API-Arg': escapeNonAscii('{"path":"${rPath(path)}"}'),
     };
 
     final response = await http.post(
@@ -689,7 +690,7 @@ class DropboxFile {
   Future<Map<String, dynamic>> downloadFolderAsZip(String path) async {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
-      'Dropbox-API-Arg': '{"path":"${rPath(path)}"}',
+      'Dropbox-API-Arg': escapeNonAscii('{"path":"${rPath(path)}"}'),
     };
 
     final response = await http.post(
@@ -1819,13 +1820,13 @@ class DropboxFile {
     final headers = {
       'Authorization': 'Bearer ${_dropbox.accessToken}',
       'Content-type': 'application/octet-stream',
-      'Dropbox-API-Arg': jsonEncode({
+      'Dropbox-API-Arg': escapeNonAscii(jsonEncode({
         "autorename": autorename,
         "mode": mode.name,
         "mute": mute,
         "path": rPath(destinationPath),
         "strict_conflict": strictConflict,
-      }),
+      })),
     };
 
     Uint8List data = await file.readAsBytes();
@@ -2015,7 +2016,7 @@ class DropboxFile {
     };
 
     final Map<String, dynamic> requestData = {'async_job_id': asyncJobId};
-    final String requestBody = jsonEncode(requestData);
+    final String requestBody = escapeNonAscii(jsonEncode(requestData));
 
     final http.Response response = await http.post(
       uri,

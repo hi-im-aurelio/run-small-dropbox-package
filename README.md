@@ -1,4 +1,4 @@
-<img height="302px" width="302px" src="./git_assets/run-small-dropbox_icone.png"></img>
+<img height="302px" width="302px" src="https://github.com/fariosofernando/run-small-dropbox-package/raw/master/git_assets/run-small-dropbox_icone.png">
 
 # Run Small Dropbox Package
 
@@ -15,7 +15,7 @@ To use this package, add run_small_dropbox as a dependency in your pubspec.yaml 
 
 ```yaml
 dependencies:
-  run_small_dropbox: ^3.0.0
+  run_small_dropbox: ^3.0.2
 ```
 
 ## Features
