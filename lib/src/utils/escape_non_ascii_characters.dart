@@ -22,7 +22,6 @@
 ///
 String escapeNonAscii(String input) {
   return input.replaceAllMapped(RegExp(r'[^\x00-\x7F]'), (match) {
-    // Converte caracteres não ASCII para códigos de escape '\uXXXX'
     return '\\u${match.group(0)!.codeUnitAt(0).toRadixString(16).padLeft(4, '0')}';
   });
 }
