@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 7.0.1-wip">
+  <meta name="description" content="run_small_dropbox API docs, for the Dart programming language.">
+  <title>run_small_dropbox - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/fariosofernando/run-small-dropbox-package">run_small_dropbox package</a></li>
+  </ol>
+  <div class="self-name">run_small_dropbox</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <img height="302px" width="302px" src="https://github.com/fariosofernando/run-small-dropbox-package/raw/master/git_assets/run-small-dropbox_icone.png">
+<h1 id="run-small-dropbox-package">Run Small Dropbox Package</h1>
+<p>A Dart SDK that simplifies interaction with the Dropbox API.
+This SDK provides convenient abstractions and methods for common operations when working with Dropbox, such as copying files, creating folders, downloading files, and more.</p>
+<p>The goal is to accelerate the integration of Dropbox functionality into the Dart and Flutter apps.</p>
+<p>The SDK is designed to be easy to use and follows a similar structure to other popular SDKs like Firebase, making it easy for familiar developers to seamlessly integrate Dropbox functionality into their apps.</p>
+<h2 id="update-310">Update (3.1.0)</h2>
+<p>In some cases, you may have file or folder names with non-ASCII characters. The <code>escapeNonAscii</code> (released in version 3.1.0) function was designed to handle situations where you may encounter file or folder names containing non-ASCII characters when interacting with the Dropbox API. The Dropbox API requires these characters to be handled appropriately to ensure smooth communication.</p>
+<pre class="language-dart"><code class="language-dart">void main() {
+  var escapedString = escapeNonAscii('Café');
+  print('Escaped String: $escapedString'); // &gt;&gt;&gt; Escaped String: Caf\u00e9
+}
+</code></pre>
+<blockquote>
+<p>escapeNonAscii is a built-in function of Run Small Dropbox, you don't need to import or define it explicitly.</p>
+</blockquote>
+<h2 id="getting-started">Getting Started</h2>
+<p>To use this package, add run_small_dropbox as a dependency in your pubspec.yaml file. For example:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  run_small_dropbox: ^3.0.2
+</code></pre>
+<h2 id="features">Features</h2>
+<ul>
+<li>
+<p>File Operations: Copy, move, delete, and manage files and folders.</p>
+</li>
+<li>
+<p>Batch Operations: Perform multiple file operations in a single batch.</p>
+</li>
+<li>
+<p>Folder Creation: Create folders individually or in batches.</p>
+</li>
+<li>
+<p>Download and Upload Files: Download files, download folders as ZIP, upload files, and more.</p>
+</li>
+<li>
+<p>Metadata Retrieval: Retrieve metadata for files and folders.</p>
+</li>
+<li>
+<p>File and Folder Search: Search for files and folders.</p>
+</li>
+<li>
+<p>Paper Operations: Create and update Paper documents.</p>
+</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>You need to get a DropboxApp instance to be able to use Dropbox modules, you can do it like this:</p>
+<pre class="language-dart"><code class="language-dart">
+final app = Dropbox.initializeApp('YOUR-ACCESS-TOKEN');
+
+</code></pre>
+<blockquote>
+<p>NOTE: "Modules" are parts of the SDK that you can access separately.
+They would basically be what Firebase Storage, Firebase Core, and
+Firebase Authentication are to the Firebase SDK.</p>
+</blockquote>
+<p>So far we only have a single “Module”, DropboxFile.</p>
+<p>All “Modules” depend on a DropboxApp object to function.</p>
+<blockquote>
+<p>I won't put comments over the examples, you can use your IDE to get an idea of what each method does. All methods have rich documentation.</p>
+</blockquote>
+<h3 id="copy-file">Copy File</h3>
+<pre class="language-dart"><code class="language-dart">
+Feature&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile = DropboxFile(yourDropboxAppInstance);
+
+    var data = await dropboxFile.copyFile(relocationPath: RelocationPath(fromPath: '/Documents/favicon2_.png', toPath: '/Desktop/favicon2_.png'));
+}
+
+</code></pre>
+<p>In the examples, you will probably notice that in some cases, the beginning of folders begins with a forward slash "/". What happens is that the Dropbox API returns an exception if it doesn't find this bar at the beginning. But Run Small Dropbox gives you the freedom to add it or not, thanks to <code>rPath</code>:</p>
+<pre class="language-dart"><code class="language-dart">void main(){
+    String path1 = rPath('/MyPathInDropbox'); // With the forward slash "/"
+    String path2 = rPath('MyPathInDropbox'); // Without the slash "/".
+
+    print("output 1: $path1"); // &gt;&gt;&gt; output 1: /MyPathInDropbox
+    print("output 2: $path2"); // &gt;&gt;&gt; output 2: /MyPathInDropbox
+}
+</code></pre>
+<blockquote>
+<p>rPath is an internal function of Run Small Dropbox, you do not need to import it or define it explicitly. When using a method with requires a <code>path</code>, you can choose to pass or not pass without the "/" slash.
+<code>dropboxFile.copyFile(FolderWithoutSlash/file.txt);</code></p>
+</blockquote>
+<h3 id="copy-file-batch">Copy File Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Feature&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile = DropboxFile(yourDropboxAppInstance);
+
+    List&lt;RelocationPath&gt; entries = [
+        RelocationPath(fromPath: '/Documents/drop_up.txt', toPath: '/Desktop/drop_up.txt'),
+        RelocationPath(fromPath: '/Documents/uploadtestfile.txt', toPath: '/Desktop/uploadtestfile.txt'),
+      ];
+
+      var data = await dropboxFile.copyBatch(entries: entries);
+}
+
+</code></pre>
+<h3 id="copy-batch-check">Copy Batch Check</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+    var data =  await dropboxFile.copyBatchCheck('dbjid:AAAeL_0EYiPPSNJabLJLqdAYWSzDBghRkbYWoV2SDx9Lbg7rr9PG8_Igr_7_irFzWvaVNTeWU7r8lab3cJ9sUOsA');
+
+}
+
+</code></pre>
+<h3 id="get-copy-reference">Get Copy Reference</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+    var data =  await dropboxFile.getCopyReference('/Documents/orders.json');
+}
+
+</code></pre>
+<h3 id="save-copy-reference">Save Copy Reference</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile = DropboxFile(yourDropboxAppInstance);
+    String copyReference = 'AAAAAlDqCCBkYTZldjZoa3ZiOW0', path = '/Documents/ref/orders.json';
+
+    var data = await dropboxFile.saveCopyReference(copyReference, path);
+}
+
+</code></pre>
+<h3 id="create-folder">Create Folder</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.createFolder('Downloads', autorename:  true);
+}
+
+</code></pre>
+<h3 id="create-folder-batch">Create Folder Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.createFolderBatch(
+        ['/Lib','Bin'],
+        autorename:  false,
+        forceAsync:  true,
+    );
+
+}
+
+</code></pre>
+<h3 id="check-create-folder-batch-job-status">Check Create Folder Batch Job Status</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    // For use this method, the flag forceAsync in createFolderBatch must be true
+    String asyncJobId =  'dbjid:AACIUTFyJ9SsVq7tFezji8rK-sO4GdpJ2wcn5hOUwsEw71d7hfa2aw_r9SCyiE9rxFqkwvIXmiNo5_KLTY8_LezA';
+
+    var data =  await dropboxFile.checkCreateFolderBatchJobStatus(asyncJobId);
+}
+
+</code></pre>
+<h3 id="delete-file-or-folder">Delete File or Folder</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.deleteFileOrFolder('/Lib');
+}
+
+</code></pre>
+<h3 id="delete-files-batch">Delete Files Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+// Get DropboxFile Instance
+DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+var data =  await dropboxFile.deleteFilesBatch([
+        DeleteArg(path:  'Downloads (1)'),
+        DeleteArg(path:  'Downloads (2)'),
+    ],
+);
+
+}
+
+</code></pre>
+<h3 id="delete-batch-check">Delete Batch Check</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    String asyncJobId =  'dbjid:AABWTKVCz9BVnnCDelfli-hJO8ve91g7lszKeV7WmycG5kRb5F1X6kTjhYJDTekMK6IDRHZXV7R3UBY417cseFZd';
+
+    var data =  await dropboxFile.deleteBatchCheck(asyncJobId);
+
+}
+
+</code></pre>
+<h3 id="download-file">Download File</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+// Get DropboxFile Instance
+DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+var data =  await dropboxFile.downloadFile('/Documents/orders.json');
+    if (data['success']) {
+        var file =  File('Me/Path/file.json');
+        await file.writeAsBytes(utf8.encode(data['result']));
+    }
+}
+
+</code></pre>
+<h3 id="download-folder-as-zip">Download Folder as Zip</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+// Get DropboxFile Instance
+DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+var data =  await dropboxFile.downloadFolderAsZip('/Documents');
+
+    if (data['success']) {
+        var file =  File('Me/Path/file.zip');
+
+        await file.writeAsBytes(utf8.encode(data['result']));
+    }
+}
+
+</code></pre>
+<h3 id="export-file">Export File</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.exportFile('/Documents/Prime Factorization.xlsx');
+}
+
+</code></pre>
+<h3 id="get-file-lock-batch">Get File Lock Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.getFileLockBatch([]);
+}
+
+</code></pre>
+<h3 id="get-metadata">Get Metadata</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.getMetadata('Desktop/orders.json');
+}
+
+</code></pre>
+<h3 id="get-preview">Get Preview</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.getPreview('/Documents/mitologiagrega.docx');
+}
+
+</code></pre>
+<h3 id="get-temporary-link">Get Temporary Link</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.getTemporaryLink('/Documents/drop_up.txt');
+}
+
+</code></pre>
+<h3 id="get-temporary-upload-link">Get Temporary Upload Link</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+    var data =  await dropboxFile.getTemporaryUploadLink('/Documents/favicon2_.png');
+}
+
+</code></pre>
+<h3 id="get-thumbnail-v2">Get Thumbnail V2</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+    var data =  await dropboxFile.getThumbnailV2('/Documents/favicon2_.png');
+
+    if (data['success']) {
+        var file =  File('/Me/Desktop/favicon2_.jpeg');
+        await file.writeAsBytes(utf8.encode(data['result']));
+    }
+}
+
+</code></pre>
+<h3 id="get-thumbnail-batch">Get Thumbnail Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.getThumbnailBatch(['/Documents/favicon2_.png', '/Documents/favicon2_.png']);
+}
+
+</code></pre>
+<h3 id="list-folder">List Folder</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.listFolder('/Documents');
+}
+
+</code></pre>
+<h3 id="list-folder-continue">List Folder Continue</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    String cursor =  'AAE78DDMQjfST3HwI';
+
+    var data =  await dropboxFile.listFolderContinue(cursor);
+}
+
+</code></pre>
+<h3 id="list-folder-get-latest-cursor">List Folder Get Latest Cursor</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.listFolderGetLatestCursor('/Documents');
+}
+
+</code></pre>
+<h3 id="list-folder-longpoll">List Folder Longpoll</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    String cursor =  'AAGvWI9NjRfdjJwFCJdlQKIbRNn';
+    int timeout =  30;
+    var data =  await dropboxFile.listFolderLongpoll(cursor, timeout: timeout);
+}
+
+</code></pre>
+<h3 id="list-revisions">List Revisions</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.listRevisions('/Documents/mitologiagrega.docx');
+}
+
+</code></pre>
+<h3 id="lock-file-batch">Lock File Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.lockFileBatch(['/Desktop/orders.json']);
+}
+
+</code></pre>
+<h3 id="move-v2">Move V2</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.moveV2(RelocationPath(fromPath:  '/Documents/users.json', toPath:  '/Desktop/users.json'));
+}
+
+</code></pre>
+<h3 id="move-batch-v2">Move Batch V2</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.moveBatchV2([
+            RelocationPath(fromPath:  '/Documents/users.json', toPath:  '/Desktop/users.json'),
+            RelocationPath(fromPath:  '/Documents/main.dart', toPath:  '/Desktop/main.dart'),
+        ],
+    );
+}
+
+</code></pre>
+<h3 id="move-batch-check-v2">Move Batch Check V2</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    String asyncJobId =  'dbjid:AACUbbYLC4V4a58VE3L923XCBH5myG1_qK33mhOjwS5p-7YxylZCpnhcLMlCNCmEA5oQAJMJIYQZkaLee05zMIXW';
+
+    var data =  await dropboxFile.moveBatchCheckV2(asyncJobId);
+}
+
+</code></pre>
+<h3 id="paper-create">Paper Create</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.paperCreate(
+        '/Desktop/document.paper',
+        importFormat:  ImportFormat.html,
+        );
+}
+
+</code></pre>
+<h3 id="paper-update">Paper Update</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.paperUpdate('');
+}
+
+</code></pre>
+<h3 id="permanently-delete">Permanently Delete</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.permanentlyDelete('/Desktop/orders.json');
+}
+
+</code></pre>
+<h3 id="restore-file">Restore File</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.restoreFile('/Documents/file.txt', '/Documents/file.txt');
+}
+
+</code></pre>
+<h3 id="save-url">Save URL</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.saveUrl('', '');
+}
+
+</code></pre>
+<h3 id="check-job-status">Check Job Status</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.checkJobStatus('');
+}
+
+</code></pre>
+<h3 id="search-files">Search Files</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.searchFiles('orders');
+}
+
+</code></pre>
+<h3 id="search-continue">Search Continue</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.searchContinue('');
+}
+
+</code></pre>
+<h3 id="add-tag">Add Tag</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.addTag('/Desktop/orders.json', 'sdkTest');
+}
+
+</code></pre>
+<h3 id="get-tags">Get Tags</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.getTags(['/Desktop/orders.json']);
+}
+
+</code></pre>
+<h3 id="remove-tag">Remove Tag</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.removeTag('/Desktop/orders.json', 'sdkTest');
+}
+
+</code></pre>
+<h3 id="unlock-file-batch">Unlock File Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.unlockFileBatch(['/Desktop/orders.json']);
+}
+
+</code></pre>
+<h3 id="upload-file">Upload File</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.uploadFile(File('/Me/Desktop/dev_ttmp/main.dart'), destinationPath:  '/Documents/main.dart');
+}
+
+</code></pre>
+<h3 id="upload-session-append">Upload Session Append</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.uploadSessionAppend(File(''), sessionID:  '', offset:  3);
+}
+
+</code></pre>
+<h3 id="upload-session-finish">Upload Session Finish</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.uploadSessionFinish('', 0, '');
+}
+
+</code></pre>
+<h3 id="upload-session-finish-batch">Upload Session Finish Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    List&lt;UploadSessionFinishArg&gt; entries = [
+        UploadSessionFinishArg(
+            cursor:  UploadSessionCursor(sessionId:  '', offset:  0),
+            commit:  CommitInfo(
+                path:  '/Homework/math/Matrices.txt',
+                mode:  WriteMode.add,
+                autorename:  true,
+                clientModified:  DateTime.now(),
+                mute:  false,
+                propertyGroups: [
+                    PropertyGroup(
+                        templateId: 'your_template_id',
+                        fields: [
+                            PropertyField(name:  'name', value:  'Bob'),
+                            ]
+                        ),
+                    ],
+                strictConflict:  false,
+                contentHash:  'contentHash123',
+            ),
+        ),
+    ];
+
+    var data =  await dropboxFile.uploadSessionFinishBatch(entries);
+}
+
+</code></pre>
+<h3 id="upload-session-finish-batch-check">Upload Session Finish Batch Check</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.uploadSessionFinishBatchCheck('');
+}
+
+</code></pre>
+<h3 id="upload-session-start">Upload Session Start</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.uploadSessionStart(File(''));
+}
+
+</code></pre>
+<h3 id="upload-session-start-batch">Upload Session Start Batch</h3>
+<pre class="language-dart"><code class="language-dart">
+Future&lt;void&gt; method() async {
+    // Get DropboxFile Instance
+    DropboxFile dropboxFile =  DropboxFile(yourDropboxAppInstance);
+
+    var data =  await dropboxFile.uploadSessionStartBatch(0);
+}
+
+</code></pre>
+<p><em>Ensure to replace <code>yourDropboxAppInstance</code> with the appropriate initialization of your DropboxApp instance.</em></p>
+<h2 id="byby">BYBY</h2>
+<p>We hope this SDK makes your interactions with the Dropbox API easier when developing your Dart/Flutter projects.</p>
+<p>If you have any questions, suggestions or encounter any problems, feel free to get in touch.</p>
+<p>You can visit the repository on <a href="https://github.com/fariosofernando/run-small-dropbox-package">Github</a> to learn more about it. Happy coding!</p>
+<p>Hey! Run, run! Small Dropbox!</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="run_small_dropbox">
+  <span class="name"><a href="run_small_dropbox/run_small_dropbox-library.html">run_small_dropbox</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/fariosofernando/run-small-dropbox-package">run_small_dropbox package</a></li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">run_small_dropbox</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="run_small_dropbox/run_small_dropbox-library.html">run_small_dropbox</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    run_small_dropbox
+      3.1.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

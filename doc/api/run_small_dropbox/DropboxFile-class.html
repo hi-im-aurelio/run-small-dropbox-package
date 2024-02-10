@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the DropboxFile class from the run_small_dropbox library, for the Dart programming language.">
+  <title>DropboxFile class - run_small_dropbox library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">run_small_dropbox</a></li>
+    <li><a href="../run_small_dropbox/run_small_dropbox-library.html">run_small_dropbox</a></li>
+    <li class="self-crumb">DropboxFile class</li>
+  </ol>
+  <div class="self-name">DropboxFile</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="run_small_dropbox&#47;run_small_dropbox-library-sidebar.html"
+      data-below-sidebar="run_small_dropbox&#47;DropboxFile-class-sidebar.html">
+      <div>
+<h1><span class="kind-class">DropboxFile</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>The <code>DropboxFile</code> class provides a convenient interface for interacting
+with the Dropbox API related to file operations.</p>
+<p>It encapsulates methods to copy, move, delete, upload, and download files,
+as well as managing file metadata and performing batch operations.</p>
+<p>This class requires a valid <code>DropboxApp</code> instance for authentication and
+authorization. Once initialized, you can use the various methods to perform
+file-related actions on the user's Dropbox account.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">DropboxApp app = await Dropbox.initializeApp();
+DropboxFile dropboxFile = DropboxFile(app);
+
+// Copy a file
+var copyResult = await dropboxFile.copyFile(
+  fromPath: '/Documents/source.txt',
+  toPath: '/Backup/destination.txt',
+  autorename: true,
+);
+
+print(copyResult);
+</code></pre>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="DropboxFile" class="callable">
+          <span class="name"><a href="../run_small_dropbox/DropboxFile/DropboxFile.html">DropboxFile</a></span><span class="signature">(<span class="parameter" id="-param-dropbox"><span class="type-annotation">DropboxApp</span> <span class="parameter-name">dropbox</span></span>)</span>
+        </dt>
+        <dd>
+          
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor inherited" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="addTag" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/addTag.html">addTag</a></span><span class="signature">(<wbr><span class="parameter" id="addTag-param-filePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="addTag-param-tagText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">tagText</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Add a tag to an item. A tag is a string.
+  
+
+</dd>
+
+        <dt id="checkCreateFolderBatchJobStatus" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/checkCreateFolderBatchJobStatus.html">checkCreateFolderBatchJobStatus</a></span><span class="signature">(<wbr><span class="parameter" id="checkCreateFolderBatchJobStatus-param-asyncJobId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">asyncJobId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the status of an asynchronous job for create_folder_batch.
+  
+
+</dd>
+
+        <dt id="checkJobStatus" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/checkJobStatus.html">checkJobStatus</a></span><span class="signature">(<wbr><span class="parameter" id="checkJobStatus-param-asyncJobId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">asyncJobId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Check the status of a save_url job.
+  
+
+</dd>
+
+        <dt id="copyBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/copyBatch.html">copyBatch</a></span><span class="signature">(<wbr><span class="parameter" id="copyBatch-param-entries">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../run_small_dropbox/RelocationPath-class.html">RelocationPath</a></span>&gt;</span></span> <span class="parameter-name">entries</span>, </span><span class="parameter" id="copyBatch-param-autorename"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Copies multiple files or folders to different locations at once in the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="copyBatchCheck" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/copyBatchCheck.html">copyBatchCheck</a></span><span class="signature">(<wbr><span class="parameter" id="copyBatchCheck-param-asyncJobId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">asyncJobId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the status of an asynchronous job for copying multiple files or folders.
+  
+
+</dd>
+
+        <dt id="copyFile" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/copyFile.html">copyFile</a></span><span class="signature">(<wbr><span class="parameter" id="copyFile-param-relocationPath">{<span>required</span> <span class="type-annotation"><a href="../run_small_dropbox/RelocationPath-class.html">RelocationPath</a></span> <span class="parameter-name">relocationPath</span>, </span><span class="parameter" id="copyFile-param-allowOwnershipTransfer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">allowOwnershipTransfer</span> = <span class="default-value">false</span>, </span><span class="parameter" id="copyFile-param-allowSharedFolder"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">allowSharedFolder</span> = <span class="default-value">false</span>, </span><span class="parameter" id="copyFile-param-autorename"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Copies a file or folder from one location to another in the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="createFolder" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/createFolder.html">createFolder</a></span><span class="signature">(<wbr><span class="parameter" id="createFolder-param-folderPath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">folderPath</span>, </span><span class="parameter" id="createFolder-param-autorename">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Create a folder at a given path in the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="createFolderBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/createFolderBatch.html">createFolderBatch</a></span><span class="signature">(<wbr><span class="parameter" id="createFolderBatch-param-folderPaths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">folderPaths</span>, </span><span class="parameter" id="createFolderBatch-param-autorename">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>, </span><span class="parameter" id="createFolderBatch-param-forceAsync"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">forceAsync</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Create multiple folders at once in the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="deleteBatchCheck" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/deleteBatchCheck.html">deleteBatchCheck</a></span><span class="signature">(<wbr><span class="parameter" id="deleteBatchCheck-param-asyncJobId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">asyncJobId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the status of an asynchronous job for delete_batch.
+  
+
+</dd>
+
+        <dt id="deleteFileOrFolder" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/deleteFileOrFolder.html">deleteFileOrFolder</a></span><span class="signature">(<wbr><span class="parameter" id="deleteFileOrFolder-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="deleteFileOrFolder-param-parentRev">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">parentRev</span> = <span class="default-value">&quot;&quot;</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Delete the file or folder at a given path in the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="deleteFilesBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/deleteFilesBatch.html">deleteFilesBatch</a></span><span class="signature">(<wbr><span class="parameter" id="deleteFilesBatch-param-paths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../run_small_dropbox/DeleteArg-class.html">DeleteArg</a></span>&gt;</span></span> <span class="parameter-name">paths</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Delete multiple files/folders at once in the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="downloadFile" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/downloadFile.html">downloadFile</a></span><span class="signature">(<wbr><span class="parameter" id="downloadFile-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Download a file from a user's Dropbox.
+  
+
+</dd>
+
+        <dt id="downloadFolderAsZip" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/downloadFolderAsZip.html">downloadFolderAsZip</a></span><span class="signature">(<wbr><span class="parameter" id="downloadFolderAsZip-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Download a folder from the user's Dropbox, as a zip file.
+  
+
+</dd>
+
+        <dt id="exportFile" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/exportFile.html">exportFile</a></span><span class="signature">(<wbr><span class="parameter" id="exportFile-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="exportFile-param-exportFormat">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">exportFormat</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Export a file from a user's Dropbox.
+  
+
+</dd>
+
+        <dt id="getCopyReference" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getCopyReference.html">getCopyReference</a></span><span class="signature">(<wbr><span class="parameter" id="getCopyReference-param-filePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Gets a copy reference to a file or folder.
+  
+
+</dd>
+
+        <dt id="getFileLockBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getFileLockBatch.html">getFileLockBatch</a></span><span class="signature">(<wbr><span class="parameter" id="getFileLockBatch-param-paths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">paths</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Return the lock metadata for the given list of paths.
+  
+
+</dd>
+
+        <dt id="getMetadata" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getMetadata.html">getMetadata</a></span><span class="signature">(<wbr><span class="parameter" id="getMetadata-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="getMetadata-param-includeDeleted">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeDeleted</span> = <span class="default-value">false</span>, </span><span class="parameter" id="getMetadata-param-includeHasExplicitSharedMembers"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeHasExplicitSharedMembers</span> = <span class="default-value">false</span>, </span><span class="parameter" id="getMetadata-param-includeMediaInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeMediaInfo</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the metadata for a file or folder.
+  
+
+</dd>
+
+        <dt id="getPreview" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getPreview.html">getPreview</a></span><span class="signature">(<wbr><span class="parameter" id="getPreview-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a preview for a file.
+  
+
+</dd>
+
+        <dt id="getTags" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getTags.html">getTags</a></span><span class="signature">(<wbr><span class="parameter" id="getTags-param-filePaths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">filePaths</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a list of tags assigned to items.
+  
+
+</dd>
+
+        <dt id="getTemporaryLink" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getTemporaryLink.html">getTemporaryLink</a></span><span class="signature">(<wbr><span class="parameter" id="getTemporaryLink-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a temporary link to stream content of a file.
+  
+
+</dd>
+
+        <dt id="getTemporaryUploadLink" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getTemporaryUploadLink.html">getTemporaryUploadLink</a></span><span class="signature">(<wbr><span class="parameter" id="getTemporaryUploadLink-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="getTemporaryUploadLink-param-autorename">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">true</span>, </span><span class="parameter" id="getTemporaryUploadLink-param-mode"><span class="type-annotation"><a href="../run_small_dropbox/WriteMode.html">WriteMode</a></span> <span class="parameter-name">mode</span> = <span class="default-value">WriteMode.add</span>, </span><span class="parameter" id="getTemporaryUploadLink-param-mute"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mute</span> = <span class="default-value">false</span>, </span><span class="parameter" id="getTemporaryUploadLink-param-strictConflict"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">strictConflict</span> = <span class="default-value">false</span>, </span><span class="parameter" id="getTemporaryUploadLink-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span> = <span class="default-value">3600</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a one-time use temporary upload link to upload a file to a Dropbox location.
+This endpoint acts as a delayed upload.
+  
+
+</dd>
+
+        <dt id="getThumbnailBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getThumbnailBatch.html">getThumbnailBatch</a></span><span class="signature">(<wbr><span class="parameter" id="getThumbnailBatch-param-paths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">paths</span>, </span><span class="parameter" id="getThumbnailBatch-param-format">{<span class="type-annotation"><a href="../run_small_dropbox/ThumbnailFormat.html">ThumbnailFormat</a></span> <span class="parameter-name">format</span> = <span class="default-value">ThumbnailFormat.jpeg</span>, </span><span class="parameter" id="getThumbnailBatch-param-mode"><span class="type-annotation"><a href="../run_small_dropbox/ThumbnailMode.html">ThumbnailMode</a></span> <span class="parameter-name">mode</span> = <span class="default-value">ThumbnailMode.strict</span>, </span><span class="parameter" id="getThumbnailBatch-param-quality"><span class="type-annotation"><a href="../run_small_dropbox/ThumbnailQuality.html">ThumbnailQuality</a></span> <span class="parameter-name">quality</span> = <span class="default-value">ThumbnailQuality.quality_80</span>, </span><span class="parameter" id="getThumbnailBatch-param-size"><span class="type-annotation"><a href="../run_small_dropbox/ThumbnailSize.html">ThumbnailSize</a></span> <span class="parameter-name">size</span> = <span class="default-value">ThumbnailSize.w64h64</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get thumbnails for a list of images.
+  
+
+</dd>
+
+        <dt id="getThumbnailV2" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/getThumbnailV2.html">getThumbnailV2</a></span><span class="signature">(<wbr><span class="parameter" id="getThumbnailV2-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="getThumbnailV2-param-format">{<span class="type-annotation"><a href="../run_small_dropbox/ThumbnailFormat.html">ThumbnailFormat</a></span> <span class="parameter-name">format</span> = <span class="default-value">ThumbnailFormat.jpeg</span>, </span><span class="parameter" id="getThumbnailV2-param-mode"><span class="type-annotation"><a href="../run_small_dropbox/ThumbnailMode.html">ThumbnailMode</a></span> <span class="parameter-name">mode</span> = <span class="default-value">ThumbnailMode.strict</span>, </span><span class="parameter" id="getThumbnailV2-param-quality"><span class="type-annotation"><a href="../run_small_dropbox/ThumbnailQuality.html">ThumbnailQuality</a></span> <span class="parameter-name">quality</span> = <span class="default-value">ThumbnailQuality.quality_80</span>, </span><span class="parameter" id="getThumbnailV2-param-size"><span class="type-annotation"><a href="../run_small_dropbox/ThumbnailSize.html">ThumbnailSize</a></span> <span class="parameter-name">size</span> = <span class="default-value">ThumbnailSize.w64h64</span>, </span><span class="parameter" id="getThumbnailV2-param-pathOrLink"><span class="type-annotation"><a href="../run_small_dropbox/PathOrLink.html">PathOrLink</a></span> <span class="parameter-name">pathOrLink</span> = <span class="default-value">PathOrLink.path</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a thumbnail for an image.
+  
+
+</dd>
+
+        <dt id="listFolder" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/listFolder.html">listFolder</a></span><span class="signature">(<wbr><span class="parameter" id="listFolder-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="listFolder-param-includeDeleted">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeDeleted</span> = <span class="default-value">false</span>, </span><span class="parameter" id="listFolder-param-includeHasExplicitSharedMembers"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeHasExplicitSharedMembers</span> = <span class="default-value">false</span>, </span><span class="parameter" id="listFolder-param-includeMediaInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeMediaInfo</span> = <span class="default-value">false</span>, </span><span class="parameter" id="listFolder-param-includeMountedFolders"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeMountedFolders</span> = <span class="default-value">true</span>, </span><span class="parameter" id="listFolder-param-includeNonDownloadableFiles"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeNonDownloadableFiles</span> = <span class="default-value">true</span>, </span><span class="parameter" id="listFolder-param-recursive"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">recursive</span> = <span class="default-value">false</span>, </span><span class="parameter" id="listFolder-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span> = <span class="default-value">100</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Starts returning the contents of a folder.
+  
+
+</dd>
+
+        <dt id="listFolderContinue" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/listFolderContinue.html">listFolderContinue</a></span><span class="signature">(<wbr><span class="parameter" id="listFolderContinue-param-cursor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">cursor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Continues retrieving the contents of a folder.
+  
+
+</dd>
+
+        <dt id="listFolderGetLatestCursor" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/listFolderGetLatestCursor.html">listFolderGetLatestCursor</a></span><span class="signature">(<wbr><span class="parameter" id="listFolderGetLatestCursor-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A way to quickly get a cursor for the folder's state.
+  
+
+</dd>
+
+        <dt id="listFolderLongpoll" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/listFolderLongpoll.html">listFolderLongpoll</a></span><span class="signature">(<wbr><span class="parameter" id="listFolderLongpoll-param-cursor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">cursor</span>, </span><span class="parameter" id="listFolderLongpoll-param-timeout">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">timeout</span> = <span class="default-value">30</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A longpoll endpoint to wait for changes on an account. In conjunction with
+listFolder/continue, this call gives you a low-latency way to monitor an
+account for file changes. The connection will block until there are changes
+available or a timeout occurs. This endpoint is useful mostly for
+client-side apps. If you're looking for server-side notifications, check
+out our webhooks documentation.
+  
+
+</dd>
+
+        <dt id="listRevisions" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/listRevisions.html">listRevisions</a></span><span class="signature">(<wbr><span class="parameter" id="listRevisions-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="listRevisions-param-limit">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span> = <span class="default-value">10</span>, </span><span class="parameter" id="listRevisions-param-mode"><span class="type-annotation"><a href="../run_small_dropbox/ListRevisionsMode.html">ListRevisionsMode</a></span> <span class="parameter-name">mode</span> = <span class="default-value">ListRevisionsMode.path</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns revisions for files based on a file path or a file id. The file
+path or file id is identified from the latest file entry at the given
+file path or id. This endpoint allows your app to query either by file
+path or file id by setting the mode parameter appropriately. In the
+ListRevisionsMode.path (default) mode, all revisions at the same file
+path as the latest file entry are returned. If revisions with the same
+file id are desired, then mode must be set to ListRevisionsMode.id. The
+ListRevisionsMode.id mode is useful to retrieve revisions for a given
+file across moves or renames.
+  
+
+</dd>
+
+        <dt id="lockFileBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/lockFileBatch.html">lockFileBatch</a></span><span class="signature">(<wbr><span class="parameter" id="lockFileBatch-param-filePaths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">filePaths</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Lock the files at the given paths. A locked file will be writable only
+by the lock holder. A successful response indicates that the file has
+been locked. Returns a list of the locked file paths and their metadata
+after this operation.
+  
+
+</dd>
+
+        <dt id="moveBatchCheckV2" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/moveBatchCheckV2.html">moveBatchCheckV2</a></span><span class="signature">(<wbr><span class="parameter" id="moveBatchCheckV2-param-asyncJobId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">asyncJobId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the status of an asynchronous job for move_batch:2. It returns a list
+of results for each entry.
+  
+
+</dd>
+
+        <dt id="moveBatchV2" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/moveBatchV2.html">moveBatchV2</a></span><span class="signature">(<wbr><span class="parameter" id="moveBatchV2-param-entries"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../run_small_dropbox/RelocationPath-class.html">RelocationPath</a></span>&gt;</span></span> <span class="parameter-name">entries</span>, </span><span class="parameter" id="moveBatchV2-param-allowOwnershipTransfer">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">allowOwnershipTransfer</span> = <span class="default-value">false</span>, </span><span class="parameter" id="moveBatchV2-param-autorename"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Move multiple files or folders to different locations at once in the user's
+Dropbox. Note that we do not currently support case-only renaming. This route
+will replace move_batch:1. The main difference is this route will return
+status for each entry, while move_batch:1 raises failure if any entry fails.
+This route will either finish synchronously, or return a job ID and do the
+async move job in the background. Please use move_batch/check:2 to check
+the job status.
+  
+
+</dd>
+
+        <dt id="moveV2" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/moveV2.html">moveV2</a></span><span class="signature">(<wbr><span class="parameter" id="moveV2-param-relocationPath"><span class="type-annotation"><a href="../run_small_dropbox/RelocationPath-class.html">RelocationPath</a></span> <span class="parameter-name">relocationPath</span>, </span><span class="parameter" id="moveV2-param-allowOwnershipTransfer">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">allowOwnershipTransfer</span> = <span class="default-value">false</span>, </span><span class="parameter" id="moveV2-param-allowSharedFolder"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">allowSharedFolder</span> = <span class="default-value">false</span>, </span><span class="parameter" id="moveV2-param-autorename"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Move a file or folder to a different location in the user's Dropbox. If
+the source path is a folder all its contents will be moved. Note that
+we do not currently support case-only renaming.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="paperCreate" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/paperCreate.html">paperCreate</a></span><span class="signature">(<wbr><span class="parameter" id="paperCreate-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="paperCreate-param-importFormat">{<span class="type-annotation"><a href="../run_small_dropbox/ImportFormat.html">ImportFormat</a></span> <span class="parameter-name">importFormat</span> = <span class="default-value">ImportFormat.markdown</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Creates a new Paper doc with the provided content.
+  
+
+</dd>
+
+        <dt id="paperUpdate" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/paperUpdate.html">paperUpdate</a></span><span class="signature">(<wbr><span class="parameter" id="paperUpdate-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="paperUpdate-param-docUpdatePolicy">{<span class="type-annotation"><a href="../run_small_dropbox/PaperDocUpdatePolicy.html">PaperDocUpdatePolicy</a></span> <span class="parameter-name">docUpdatePolicy</span> = <span class="default-value">PaperDocUpdatePolicy.update</span>, </span><span class="parameter" id="paperUpdate-param-importFormat"><span class="type-annotation"><a href="../run_small_dropbox/ImportFormat.html">ImportFormat</a></span> <span class="parameter-name">importFormat</span> = <span class="default-value">ImportFormat.markdown</span>, </span><span class="parameter" id="paperUpdate-param-paperRevision"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">paperRevision</span> = <span class="default-value">0</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Updates an existing Paper doc with the provided content.
+  
+
+</dd>
+
+        <dt id="permanentlyDelete" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/permanentlyDelete.html">permanentlyDelete</a></span><span class="signature">(<wbr><span class="parameter" id="permanentlyDelete-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="permanentlyDelete-param-parentRev">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">parentRev</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Permanently delete the file or folder at a given path.
+  
+
+</dd>
+
+        <dt id="removeTag" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/removeTag.html">removeTag</a></span><span class="signature">(<wbr><span class="parameter" id="removeTag-param-filePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="removeTag-param-tagText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">tagText</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Remove a tag from an item.
+  
+
+</dd>
+
+        <dt id="restoreFile" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/restoreFile.html">restoreFile</a></span><span class="signature">(<wbr><span class="parameter" id="restoreFile-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="restoreFile-param-rev"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">rev</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Restore a specific revision of a file to the given path.
+  
+
+</dd>
+
+        <dt id="saveCopyReference" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/saveCopyReference.html">saveCopyReference</a></span><span class="signature">(<wbr><span class="parameter" id="saveCopyReference-param-copyReference"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">copyReference</span>, </span><span class="parameter" id="saveCopyReference-param-destinationPath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">destinationPath</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Save a copy reference returned by <code>copyReferenceGet</code> to the user's Dropbox.
+  
+
+</dd>
+
+        <dt id="saveUrl" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/saveUrl.html">saveUrl</a></span><span class="signature">(<wbr><span class="parameter" id="saveUrl-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="saveUrl-param-url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">url</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Save the data from a specified URL into a file in the user's Dropbox.
+Note that the transfer from the URL must complete within 15 minutes,
+or the operation will time out, and the job will fail. If the given path
+already exists, the file will be renamed to avoid the conflict (e.g., myfile (1).txt).
+  
+
+</dd>
+
+        <dt id="searchContinue" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/searchContinue.html">searchContinue</a></span><span class="signature">(<wbr><span class="parameter" id="searchContinue-param-cursor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">cursor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Fetches the next page of search results returned from search:2.
+  
+
+</dd>
+
+        <dt id="searchFiles" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/searchFiles.html">searchFiles</a></span><span class="signature">(<wbr><span class="parameter" id="searchFiles-param-query"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">query</span>, </span><span class="parameter" id="searchFiles-param-path">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span> = <span class="default-value">&#39;&#39;</span>, </span><span class="parameter" id="searchFiles-param-includeHighlights"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">includeHighlights</span> = <span class="default-value">false</span>, </span><span class="parameter" id="searchFiles-param-filenameOnly"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">filenameOnly</span> = <span class="default-value">false</span>, </span><span class="parameter" id="searchFiles-param-maxResults"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">maxResults</span> = <span class="default-value">10</span>, </span><span class="parameter" id="searchFiles-param-fileStatus"><span class="type-annotation"><a href="../run_small_dropbox/FileStatus.html">FileStatus</a></span> <span class="parameter-name">fileStatus</span> = <span class="default-value">FileStatus.active</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Searches for files and folders.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="unlockFileBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/unlockFileBatch.html">unlockFileBatch</a></span><span class="signature">(<wbr><span class="parameter" id="unlockFileBatch-param-filePaths"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">filePaths</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Unlock the files at the given paths. A locked file can only be unlocked by the
+lock holder or, if a business account, a team admin. A successful response
+indicates that the file has been unlocked. Returns a list of the unlocked file
+paths and their metadata after this operation.
+  
+
+</dd>
+
+        <dt id="uploadFile" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadFile.html">uploadFile</a></span><span class="signature">(<wbr><span class="parameter" id="uploadFile-param-file"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-io/File-class.html">File</a></span> <span class="parameter-name">file</span>, </span><span class="parameter" id="uploadFile-param-destinationPath">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">destinationPath</span>, </span><span class="parameter" id="uploadFile-param-mode"><span class="type-annotation"><a href="../run_small_dropbox/WriteMode.html">WriteMode</a></span> <span class="parameter-name">mode</span> = <span class="default-value">WriteMode.add</span>, </span><span class="parameter" id="uploadFile-param-autorename"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>, </span><span class="parameter" id="uploadFile-param-mute"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mute</span> = <span class="default-value">false</span>, </span><span class="parameter" id="uploadFile-param-strictConflict"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">strictConflict</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Create a new file with the contents provided in the request. Do not use this
+to upload a file larger than 150 MB. Instead, create an upload session with
+upload_session/start. Calls to this endpoint will count as data transport calls
+for any Dropbox Business teams with a limit on the number of data transport
+calls allowed per month. For more information, see the Data transport limit page.
+  
+
+</dd>
+
+        <dt id="uploadSessionAppend" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadSessionAppend.html">uploadSessionAppend</a></span><span class="signature">(<wbr><span class="parameter" id="uploadSessionAppend-param-file"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-io/File-class.html">File</a></span> <span class="parameter-name">file</span>, </span><span class="parameter" id="uploadSessionAppend-param-sessionID">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionID</span>, </span><span class="parameter" id="uploadSessionAppend-param-offset"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">offset</span>, </span><span class="parameter" id="uploadSessionAppend-param-close"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">close</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Append more data to an upload session. When the parameter close is set, this
+call will close the session. A single request should not upload more than 150 MB.
+The maximum size of a file one can upload to an upload session is 350 GB.
+Calls to this endpoint will count as data transport calls for any Dropbox Business
+teams with a limit on the number of data transport calls allowed per month.
+For more information, see the Data transport limit page.
+  
+
+</dd>
+
+        <dt id="uploadSessionFinish" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadSessionFinish.html">uploadSessionFinish</a></span><span class="signature">(<wbr><span class="parameter" id="uploadSessionFinish-param-sessionID"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionID</span>, </span><span class="parameter" id="uploadSessionFinish-param-offset"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">offset</span>, </span><span class="parameter" id="uploadSessionFinish-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="uploadSessionFinish-param-autorename">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autorename</span> = <span class="default-value">false</span>, </span><span class="parameter" id="uploadSessionFinish-param-mute"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mute</span> = <span class="default-value">false</span>, </span><span class="parameter" id="uploadSessionFinish-param-strictConflict"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">strictConflict</span> = <span class="default-value">false</span>, </span><span class="parameter" id="uploadSessionFinish-param-mode"><span class="type-annotation"><a href="../run_small_dropbox/WriteMode.html">WriteMode</a></span> <span class="parameter-name">mode</span> = <span class="default-value">WriteMode.add</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Finish an upload session and save the uploaded data to the given file path.
+A single request should not upload more than 150 MB. The maximum size of a file
+one can upload to an upload session is 350 GB. Calls to this endpoint will count
+as data transport calls for any Dropbox Business teams with a limit on the number
+of data transport calls allowed per month. For more information, see the Data transport limit page.
+  
+
+</dd>
+
+        <dt id="uploadSessionFinishBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadSessionFinishBatch.html">uploadSessionFinishBatch</a></span><span class="signature">(<wbr><span class="parameter" id="uploadSessionFinishBatch-param-entries"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../run_small_dropbox/UploadSessionFinishArg-class.html">UploadSessionFinishArg</a></span>&gt;</span></span> <span class="parameter-name">entries</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  This route helps you commit many files at once into a user's Dropbox. Use
+upload_session/start and upload_session/append:2 to upload file contents.
+We recommend uploading many files in parallel to increase throughput.
+Once the file contents have been uploaded, rather than calling
+upload_session/finish, use this route to finish all your upload sessions
+in a single request. UploadSessionStartArg.close or UploadSessionAppendArg.close
+needs to be true for the last upload_session/start or upload_session/append:2
+call of each upload session. The maximum size of a file one can upload to an
+upload session is 350 GB. We allow up to 1000 entries in a single request.
+Calls to this endpoint will count as data transport calls for any Dropbox Business
+teams with a limit on the number of data transport calls allowed per month.
+For more information, see the Data transport limit page.
+  
+
+</dd>
+
+        <dt id="uploadSessionFinishBatchCheck" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadSessionFinishBatchCheck.html">uploadSessionFinishBatchCheck</a></span><span class="signature">(<wbr><span class="parameter" id="uploadSessionFinishBatchCheck-param-asyncJobId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">asyncJobId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the status of an asynchronous job for upload_session/finish_batch.
+If success, it returns a list of results for each entry.
+  
+
+</dd>
+
+        <dt id="uploadSessionStart" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadSessionStart.html">uploadSessionStart</a></span><span class="signature">(<wbr><span class="parameter" id="uploadSessionStart-param-file"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-io/File-class.html">File</a></span> <span class="parameter-name">file</span>, </span><span class="parameter" id="uploadSessionStart-param-close">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">close</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Upload sessions allow you to upload a single file in one or more requests, for example
+where the size of the file is greater than 150 MB. This call starts a new upload session
+with the given data. You can then use upload_session/append:2 to add more data and
+upload_session/finish to save all the data to a file in Dropbox. A single request should
+not upload more than 150 MB. The maximum size of a file one can upload to an upload
+session is 350 GB. An upload session can be used for a maximum of 7 days. Attempting
+to use an UploadSessionStartResult.session_id with upload_session/append:2 or
+upload_session/finish more than 7 days after its creation will return a
+UploadSessionLookupError.not_found. Calls to this endpoint will count as data transport
+calls for any Dropbox Business teams with a limit on the number of data transport
+calls allowed per month. For more information, see the Data transport limit page.
+  
+
+</dd>
+
+        <dt id="uploadSessionStartBatch" class="callable">
+  <span class="name"><a href="../run_small_dropbox/DropboxFile/uploadSessionStartBatch.html">uploadSessionStartBatch</a></span><span class="signature">(<wbr><span class="parameter" id="uploadSessionStartBatch-param-numSessions"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numSessions</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  This route starts a batch of upload sessions. Please refer to <code>upload_session/start</code> usage.
+Calls to this endpoint will count as data transport calls for any Dropbox Business teams
+with a limit on the number of data transport calls allowed per month.
+For more information, see the Data transport limit page.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">run_small_dropbox</a></li>
+    <li><a href="../run_small_dropbox/run_small_dropbox-library.html">run_small_dropbox</a></li>
+    <li class="self-crumb">DropboxFile class</li>
+</ol>
+
+
+    <h5>run_small_dropbox library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    run_small_dropbox
+      3.1.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
